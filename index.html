@@ -64,15 +64,16 @@ body.menu-open{overflow:hidden}
 .drawer-feature:hover{background:#333333;color:#fff}
 .drawer-list{list-style:none;margin:32px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .drawer-list li+li{border-top:0}
-.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:60px;padding:0;background:none;border:none;color:var(--ink);font:14px var(--sans);letter-spacing:.14em;text-transform:uppercase;text-align:left;cursor:pointer}
-.acc-btn .plus{position:relative;flex:none;width:18px;height:18px;margin-right:4px}
-.acc-btn .plus::before,.acc-btn .plus::after{content:'';position:absolute;left:0;top:50%;width:18px;height:1.5px;margin-top:-.75px;background:currentColor;transition:transform .2s}
+.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:64px;padding:0;background:none;border:none;color:var(--ink);font:14px var(--sans);letter-spacing:.1em;text-transform:uppercase;text-align:left;cursor:pointer}
+.acc-btn .plus{position:relative;flex:none;width:20px;height:20px;margin-right:6px}
+.acc-btn .plus::before,.acc-btn .plus::after{content:'';position:absolute;left:0;top:50%;width:20px;height:1.5px;margin-top:-.75px;background:currentColor;transition:transform .2s,width .2s,left .2s}
 .acc-btn .plus::after{transform:rotate(90deg)}
-.acc-btn[aria-expanded="true"] .plus::after{transform:rotate(0)}
-.acc-panel{list-style:none;margin:0;padding:0 0 14px 16px}
+.acc-btn[aria-expanded="true"] .plus::before{transform:rotate(45deg);width:17px;left:1.5px}
+.acc-btn[aria-expanded="true"] .plus::after{transform:rotate(-45deg);width:17px;left:1.5px}
+.acc-panel{list-style:none;margin:0;padding:0 0 12px 30px}
 .acc-panel[hidden]{display:none}
-.acc-panel a{display:block;padding:11px 0;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
-.acc-panel a:hover{color:var(--ink)}
+.acc-panel a{display:flex;align-items:center;min-height:52px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.acc-panel a:hover{color:var(--muted)}
 .drawer-more{list-style:none;margin:0;padding:16px 0 0}
 .drawer-more a{display:flex;align-items:center;min-height:56px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
 .drawer-social{display:flex;gap:36px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
@@ -260,17 +261,15 @@ footer a:hover{color:#fff}
    To add or rename sub-sections, edit the subs list in CATEGORIES.
    ============================================================ */
 const CATEGORIES = [
-  {id:'beauty', name:'Beauty', subs:[{id:'hair', name:'Hair'}, {id:'skincare', name:'Skincare'}, {id:'makeup', name:'Makeup'}]},
-  {id:'wellness', name:'Wellness', subs:[{id:'self-care', name:'Self-Care'}, {id:'mindset', name:'Mindset'}, {id:'sleep', name:'Sleep'}]},
-  {id:'fitness', name:'Fitness', subs:[{id:'strength', name:'Strength Training'}, {id:'workouts', name:'Workouts'}, {id:'nutrition', name:'Nutrition'}]},
-  {id:'home-style', name:'Home', subs:[{id:'decor', name:'Decor'}, {id:'organization', name:'Organization'}, {id:'renting', name:'Renter-Friendly'}]},
-  {id:'mom-wife', name:'Mom & Wife', subs:[{id:'motherhood', name:'Motherhood'}, {id:'marriage', name:'Marriage'}, {id:'routines', name:'Routines'}]},
-  {id:'creating', name:'Content Creation', subs:[{id:'podcast', name:'Podcasting'}, {id:'studio', name:'Studio Setup'}, {id:'tips', name:'Creator Tips'}]}
+  {id:'health-wellness', name:'Health + Wellness', subs:[{id:'body', name:'Body'}, {id:'diy', name:'DIY'}, {id:'fitness', name:'Fitness'}, {id:'giving-back', name:'Giving Back'}, {id:'health', name:'Health'}, {id:'mind', name:'Mind'}, {id:'relationships', name:'Relationships'}, {id:'self-care', name:'Self-Care'}, {id:'soul', name:'Soul'}]},
+  {id:'home-entertaining', name:'Home + Entertaining', subs:[{id:'decor', name:'Decor'}, {id:'entertaining', name:'Entertaining'}, {id:'kids', name:'Kids'}, {id:'motherhood', name:'Motherhood'}, {id:'playlists', name:'Playlists'}, {id:'recipes', name:'Recipes'}]},
+  {id:'racquel', name:'Racquel', subs:[{id:'family', name:'Family'}, {id:'content-creation', name:'Content Creation'}, {id:'racquel', name:'Racquel'}]},
+  {id:'life-style', name:'Life + Style', subs:[{id:'adulting', name:'Adulting'}, {id:'beauty', name:'Beauty'}, {id:'guides', name:'Guides'}, {id:'hacks', name:'Hacks'}, {id:'style', name:'Style'}, {id:'travel', name:'Travel'}]}
 ];
 
 const POSTS = [
   {
-    slug:'lifting-confidence', cat:'fitness', sub:'strength', featured:true, tone:'#E0E0E0',
+    slug:'lifting-confidence', cat:'health-wellness', sub:'fitness', featured:true, tone:'#E0E0E0',
     title:'How Lifting Weights Rebuilt My Confidence',
     dek:"I didn't start strength training to change my body. I started because I'd stopped recognizing myself.",
     photo:'Photo: you, mid-lift in the gym', date:'[Publish date]', read:'6 min read',
@@ -285,7 +284,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'relaxed-hair-wash-day', cat:'beauty', sub:'hair', tone:'#EAEAEA',
+    slug:'relaxed-hair-wash-day', cat:'life-style', sub:'beauty', tone:'#EAEAEA',
     title:'My Relaxed Hair Wash Day, Step by Step',
     dek:'The routine, the products and the tools that keep my hair healthy between appointments.',
     photo:'Photo: wash day flat lay', date:'[Publish date]', read:'5 min read',
@@ -296,7 +295,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'jade-eye-mask', cat:'wellness', sub:'self-care', tone:'#E8E8E8',
+    slug:'jade-eye-mask', cat:'health-wellness', sub:'self-care', tone:'#E8E8E8',
     title:"The Jade Eye Mask I Didn't Expect to Love",
     dek:'I bought it on a whim. Here is my honest take after living with it.',
     photo:'Photo: eye mask close-up', date:'[Publish date]', read:'3 min read',
@@ -308,7 +307,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'amalfi-calm-rental', cat:'home-style', sub:'decor', tone:'#EDEDED',
+    slug:'amalfi-calm-rental', cat:'home-entertaining', sub:'decor', tone:'#EDEDED',
     title:'Bringing Amalfi Calm Into a Rental',
     dek:'Warm, coastal and renter-friendly: how I make every new house feel like home.',
     photo:'Photo: your living room', date:'[Publish date]', read:'5 min read',
@@ -319,7 +318,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'weeknight-routine', cat:'mom-wife', sub:'routines', tone:'#E5E5E5',
+    slug:'weeknight-routine', cat:'home-entertaining', sub:'motherhood', tone:'#E5E5E5',
     title:'The Weeknight Routine That Keeps Our House Running',
     dek:'Dinner, bath time and bedtime, with a full-time job and a little room left for me.',
     photo:'Photo: family moment', date:'[Publish date]', read:'4 min read',
@@ -328,7 +327,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'podcast-studio', cat:'creating', sub:'studio', tone:'#E3E3E3',
+    slug:'podcast-studio', cat:'racquel', sub:'content-creation', tone:'#E3E3E3',
     title:'Inside My Spare-Room Podcast Studio',
     dek:'The cameras, the mic and the lighting I use to film from home.',
     photo:'Photo: studio wide shot', date:'[Publish date]', read:'4 min read',
@@ -382,7 +381,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const catName = id => (CATEGORIES.find(c => c.id === id) || {}).name || '';
 
 function navLinks(active){
-  const items = CATEGORIES.slice(0,5).map(c => ({href:'#'+c.id, label:c.name, key:c.id}))
+  const items = CATEGORIES.map(c => ({href:'#'+c.id, label:c.name, key:c.id}))
     .concat([{href:'#verdicts', label:'Would I Do It Again?', key:'verdicts'}, {href:'#podcast', label:'Podcast', key:'podcast'}, {href:'#shop', label:'Shop', key:'shop'}]);
   return items.map(i => `<a href="${i.href}"${i.key===active?' class="on" aria-current="page"':''}>${esc(i.label)}</a>`).join('');
 }
@@ -606,7 +605,6 @@ document.getElementById('drawerLinks').innerHTML =
   CATEGORIES.map(c => `<li>
     <button class="acc-btn" aria-expanded="false" aria-controls="acc-${c.id}">${esc(c.name)}<span class="plus" aria-hidden="true"></span></button>
     <ul class="acc-panel" id="acc-${c.id}" hidden>
-      <li><a href="#${c.id}">All ${esc(c.name)}</a></li>
       ${(c.subs || []).map(x => `<li><a href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('')}
     </ul>
   </li>`).join('');
