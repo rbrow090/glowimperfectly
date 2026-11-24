@@ -85,7 +85,7 @@ body.menu-open{overflow:hidden}
 .sub-back:hover{color:var(--muted)}
 .sub-title{margin:0;font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.1}
 .sub-list{border-bottom:none}
-.view-all{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.m-item.m-all{font-weight:500}
 .drawer-social{display:flex;gap:28px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 .drawer-social a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:-10px}
 .drawer-social svg{width:19px;height:19px}
@@ -281,7 +281,6 @@ footer a:hover{color:#fff}
             <h2 class="sub-title" id="subTitle" tabindex="-1"></h2>
           </div>
           <ul class="m-list sub-list" id="subLinks"></ul>
-          <a class="view-all" id="subAll" href="#">View all</a>
         </div>
       </div>
     </div>
@@ -320,6 +319,8 @@ footer a:hover{color:#fff}
    To add a story, copy one block in POSTS and change it.
    Lines in [brackets] are prompts for you to replace with your words.
    Each story has a cat (a section) and a sub (one of that section's subs ids).
+   date: the publish date, e.g. '2026-11-24' or 'Nov 24, 2026'. Section, sub-section, tag and
+   Guides pages list stories newest first; stories without a real date come after, in list order.
    Optional tags: e.g. tags:['comfort-food'], using ids from TAGS below. Tags show at the
    bottom of the story and link to a page listing every story with that tag.
    To add or rename sub-sections, edit the subs list in CATEGORIES.
@@ -656,7 +657,7 @@ function renderDownloads(){
   </section>${newsBlock()}`;
 }
 function renderGuidesList(){
-  const posts = POSTS.filter(p => p.guide || (p.cat === 'guides-resources' && p.sub === 'guides'));
+  const posts = newestFirst(POSTS.filter(p => p.guide || p.cat === 'guides-resources'));
   app.innerHTML = `<section class="block" aria-labelledby="gh">
     <div class="sec-head"><h2 id="gh" style="font-size:56px">Guides</h2><a class="link-under" href="#home">All stories</a></div>
     ${guidesSubnav('guides')}
@@ -679,6 +680,8 @@ function renderGuidesHome(){
       <span class="gr-desc">${esc(t.desc)}</span>
       <span class="link-under">Explore</span>
     </a>`).join('')}</div>
+    <div class="sec-head" style="margin-top:64px"><h2 id="grp" style="font-size:40px">All Guides + Resources</h2></div>
+    ${(() => { const posts = newestFirst(POSTS.filter(p => p.guide || p.cat === 'guides-resources')); return posts.length ? `<div class="grid">${posts.map(card).join('')}</div>` : `<p class="empty">New posts coming soon.</p>`; })()}
   </section>${newsBlock()}`;
 }
 
@@ -705,11 +708,17 @@ function renderHome(){
   ${podcastBlock()}
   ${newsBlock()}`;
 }
+const postTime = p => { const t = Date.parse(p.date); return isNaN(t) ? null : t; };
+function newestFirst(list){
+  return list.map((p, i) => ({p, i, t: postTime(p)}))
+    .sort((a, b) => (a.t === null) - (b.t === null) || (b.t || 0) - (a.t || 0) || a.i - b.i)
+    .map(x => x.p);
+}
 function renderCategory(id, sub){
   const c = CATEGORIES.find(x => x.id === id);
   const subs = c.subs || [];
   const subObj = subs.find(x => x.id === sub);
-  const posts = POSTS.filter(p => p.cat === id && (!subObj || p.sub === sub));
+  const posts = newestFirst(POSTS.filter(p => p.cat === id && (!subObj || p.sub === sub)));
   const subnav = subs.length ? `<nav class="subnav" aria-label="${esc(c.name)} sub-sections">
       <a href="#${id}"${!subObj?' class="on" aria-current="page"':''}>All</a>
       ${subs.map(x => `<a href="#${id}/${x.id}"${subObj===x?' class="on" aria-current="page"':''}>${esc(x.name)}</a>`).join('')}
@@ -738,7 +747,7 @@ function tagList(p){
   return `<div class="post-tags"><span class="post-tags-label">Tagged</span>${tags.map(t => `<a class="tag" href="#tag/${esc(t)}">${esc(tagName(t))}</a>`).join('')}</div>`;
 }
 function renderTag(id){
-  const posts = POSTS.filter(p => (p.tags || []).includes(id));
+  const posts = newestFirst(POSTS.filter(p => (p.tags || []).includes(id)));
   app.innerHTML = `<section class="block" aria-labelledby="th">
     <div class="sec-head"><div><div class="eyebrow" style="margin-bottom:12px">Tag</div><h2 id="th" style="font-size:56px">${esc(tagName(id))}</h2></div><a class="link-under" href="#home">All stories</a></div>
     ${posts.length ? `<div class="grid">${posts.map(card).join('')}</div>` : `<p class="empty">New posts coming soon.</p>`}
@@ -863,8 +872,8 @@ function openSub(id, btn){
   const c = CATEGORIES.find(x => x.id === id); if(!c) return;
   subFrom = btn;
   document.getElementById('subTitle').textContent = c.name;
-  document.getElementById('subLinks').innerHTML = c.subs.map(x => `<li><a class="m-item" href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('');
-  const all = document.getElementById('subAll'); all.href = '#' + c.id; all.setAttribute('aria-label', 'View all ' + c.name);
+  document.getElementById('subLinks').innerHTML = `<li><a class="m-item m-all" href="#${c.id}">All ${esc(c.name)}</a></li>`
+    + c.subs.map(x => `<li><a class="m-item" href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('');
   paneSub.hidden = false; paneMain.setAttribute('aria-hidden', 'true'); paneMain.inert = true; paneSub.inert = false;
   drawer.classList.add('sub-open'); drawer.scrollTop = 0;
   document.getElementById('subTitle').focus({preventScroll:true});
