@@ -33,7 +33,9 @@ button{font-family:inherit}
 /* top bar + header */
 .topbar{background:var(--ink);color:var(--bg);text-align:center;padding:10px 16px;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .topbar a{color:var(--bg)}
-header{padding-top:28px}
+header.site-head{position:sticky;top:0;z-index:15;background:var(--bg);padding-top:28px;transition:box-shadow .2s}
+header.site-head.scrolled{box-shadow:0 6px 18px rgba(43,37,32,.08)}
+section[id]{scroll-margin-top:var(--head-h,120px)}
 .head-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .icon-btn{background:none;border:none;min-width:44px;min-height:44px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center}
 .logo{font-family:var(--serif);font-size:clamp(36px,6vw,52px);font-weight:500;line-height:1;text-align:center}
@@ -122,7 +124,7 @@ footer a:hover{color:#fff}
 .disclose{margin-top:32px;padding-top:24px;border-top:1px solid #4A3F36;font-size:12px;color:#BDB2A3;line-height:1.6}
 @media (max-width:760px){
   nav.main{display:none}
-  header{padding-top:20px}
+  header.site-head{padding-top:20px;padding-bottom:12px}
   .feature{padding-top:28px}
 }
 @media (max-width:600px){ .verdict-intro h2,.news h2,.split h2{font-size:36px} section.block{padding:56px 0} }
@@ -132,7 +134,7 @@ footer a:hover{color:#fff}
 
 <div class="topbar"><a href="#podcast">New on the podcast: real talk on rebuilding confidence</a></div>
 
-<header class="wrap">
+<header class="site-head" id="siteHead"><div class="wrap">
   <div class="head-row">
     <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
@@ -148,7 +150,7 @@ footer a:hover{color:#fff}
     <button class="btn" type="submit">Search</button>
   </form>
   <nav class="main" id="mainNav" aria-label="Sections"></nav>
-</header>
+</div></header>
 
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
   <div class="drawer-head wrap">
@@ -479,6 +481,12 @@ searchForm.addEventListener('submit', e => {
   if(q){ renderSearch(q); document.getElementById('mainNav').innerHTML = navLinks(''); }
 });
 
+const siteHead = document.getElementById('siteHead');
+function onScroll(){ siteHead.classList.toggle('scrolled', window.scrollY > 4); }
+function setHeadH(){ document.documentElement.style.setProperty('--head-h', siteHead.offsetHeight + 'px'); }
+window.addEventListener('scroll', onScroll, {passive:true});
+if('ResizeObserver' in window) new ResizeObserver(setHeadH).observe(siteHead); else window.addEventListener('resize', setHeadH);
+setHeadH(); onScroll();
 window.addEventListener('hashchange', route);
 route();
 </script>
