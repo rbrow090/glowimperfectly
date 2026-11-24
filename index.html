@@ -261,10 +261,10 @@ footer a:hover{color:#fff}
    To add or rename sub-sections, edit the subs list in CATEGORIES.
    ============================================================ */
 const CATEGORIES = [
+  {id:'beauty', name:'Beauty', subs:[{id:'hair', name:'Hair'}, {id:'skincare', name:'Skincare'}, {id:'makeup', name:'Makeup'}, {id:'nails', name:'Nails'}]},
+  {id:'lifestyle', name:'Lifestyle', subs:[{id:'adulting', name:'Adulting'}, {id:'content-creation', name:'Content Creation'}, {id:'guides', name:'Guides'}, {id:'hacks', name:'Hacks'}, {id:'style', name:'Style'}, {id:'travel', name:'Travel'}]},
   {id:'health-wellness', name:'Health + Wellness', subs:[{id:'body', name:'Body'}, {id:'diy', name:'DIY'}, {id:'fitness', name:'Fitness'}, {id:'giving-back', name:'Giving Back'}, {id:'health', name:'Health'}, {id:'mind', name:'Mind'}, {id:'relationships', name:'Relationships'}, {id:'self-care', name:'Self-Care'}, {id:'soul', name:'Soul'}]},
-  {id:'home-entertaining', name:'Home + Entertaining', subs:[{id:'decor', name:'Decor'}, {id:'entertaining', name:'Entertaining'}, {id:'kids', name:'Kids'}, {id:'motherhood', name:'Motherhood'}, {id:'playlists', name:'Playlists'}, {id:'recipes', name:'Recipes'}]},
-  {id:'racquel', name:'Racquel', subs:[{id:'family', name:'Family'}, {id:'content-creation', name:'Content Creation'}, {id:'racquel', name:'Racquel'}]},
-  {id:'life-style', name:'Life + Style', subs:[{id:'adulting', name:'Adulting'}, {id:'beauty', name:'Beauty'}, {id:'guides', name:'Guides'}, {id:'hacks', name:'Hacks'}, {id:'style', name:'Style'}, {id:'travel', name:'Travel'}]}
+  {id:'home-living', name:'Home', subs:[{id:'decor', name:'Decor'}, {id:'entertaining', name:'Entertaining'}, {id:'family', name:'Family'}, {id:'kids', name:'Kids'}, {id:'motherhood', name:'Motherhood'}, {id:'playlists', name:'Playlists'}, {id:'recipes', name:'Recipes'}]}
 ];
 
 const POSTS = [
@@ -284,7 +284,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'relaxed-hair-wash-day', cat:'life-style', sub:'beauty', tone:'#EAEAEA',
+    slug:'relaxed-hair-wash-day', cat:'beauty', sub:'hair', tone:'#EAEAEA',
     title:'My Relaxed Hair Wash Day, Step by Step',
     dek:'The routine, the products and the tools that keep my hair healthy between appointments.',
     photo:'Photo: wash day flat lay', date:'[Publish date]', read:'5 min read',
@@ -307,7 +307,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'amalfi-calm-rental', cat:'home-entertaining', sub:'decor', tone:'#EDEDED',
+    slug:'amalfi-calm-rental', cat:'home-living', sub:'decor', tone:'#EDEDED',
     title:'Bringing Amalfi Calm Into a Rental',
     dek:'Warm, coastal and renter-friendly: how I make every new house feel like home.',
     photo:'Photo: your living room', date:'[Publish date]', read:'5 min read',
@@ -318,7 +318,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'weeknight-routine', cat:'home-entertaining', sub:'motherhood', tone:'#E5E5E5',
+    slug:'weeknight-routine', cat:'home-living', sub:'motherhood', tone:'#E5E5E5',
     title:'The Weeknight Routine That Keeps Our House Running',
     dek:'Dinner, bath time and bedtime, with a full-time job and a little room left for me.',
     photo:'Photo: family moment', date:'[Publish date]', read:'4 min read',
@@ -327,7 +327,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'podcast-studio', cat:'racquel', sub:'content-creation', tone:'#E3E3E3',
+    slug:'podcast-studio', cat:'lifestyle', sub:'content-creation', tone:'#E3E3E3',
     title:'Inside My Spare-Room Podcast Studio',
     dek:'The cameras, the mic and the lighting I use to film from home.',
     photo:'Photo: studio wide shot', date:'[Publish date]', read:'4 min read',
