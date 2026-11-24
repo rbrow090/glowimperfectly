@@ -128,6 +128,24 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .pcard .buy span{background:#777777;color:#fff}
 .pcard .buy svg{flex:none}
 .amz{font-size:13px;color:var(--muted);margin:-20px 0 32px}
+.disclose-top{margin:0 0 32px;padding:14px 18px;background:var(--card);border:1px solid var(--line);font-size:13px;line-height:1.6;color:var(--soft)}
+.gr-intro{max-width:640px;margin:0 0 48px;font-size:19px}
+.gr-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+.gr-tile{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:32px 28px;border:1px solid var(--line);background:var(--card)}
+.gr-tile:hover{border-color:var(--ink);color:var(--ink)}
+.gr-name{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.1}
+.gr-desc{font-size:15px;line-height:1.6;font-weight:300;color:var(--soft)}
+.gr-tile .link-under{margin-top:8px}
+.dcard{display:flex;flex-direction:column;text-align:center;align-items:center}
+.dcard .img{width:100%;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.dcard .img.empty-img{background:#F5F5F5;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dcard img{width:100%;height:100%;object-fit:cover}
+.dcard h4{margin:18px 0 0;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.15}
+.dcard p{margin:10px 0 0;font-size:14px;line-height:1.55;font-weight:300;color:var(--soft)}
+.dcard .buy{margin-top:auto;padding-top:20px;width:100%}
+.dcard .buy a,.dcard .buy span{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:0 12px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.dcard .buy a:hover{background:#333333;color:#fff}
+.dcard .buy span{background:#777777;color:#fff;font-size:12px}
 .pill{font-size:13px;font-weight:500;padding:6px 12px;border:1px solid var(--ink);color:var(--ink)}
 
 .split{display:flex;flex-wrap:wrap;gap:48px;align-items:center}
@@ -172,6 +190,10 @@ footer a:hover{color:#fff}
   .pcard .badge{font-size:10px;padding:6px 8px}
   .pcard .buy a,.pcard .buy span{font-size:11px;letter-spacing:.06em;gap:8px;min-height:44px}
   .pcard .buy svg{width:22px}
+  .dcard h4{font-size:19px}
+  .dcard .buy span,.dcard .buy a{font-size:10px;letter-spacing:.05em;min-height:44px}
+  .gr-name{font-size:28px}
+  .subnav{gap:0 20px}
 }
 @media (max-width:600px){ .verdict-intro h2,.news h2,.split h2{font-size:36px} section.block{padding:56px 0} }
 </style>
@@ -215,7 +237,7 @@ footer a:hover{color:#fff}
       <h2>Menu</h2>
       <button class="close-text" id="closeText">Close menu</button>
     </div>
-    <a class="drawer-feature" href="#shop">Shop</a>
+    <a class="drawer-feature" href="#guides-resources/shop-my-favorites">Shop My Favorites</a>
     <ul class="drawer-list" id="drawerLinks"></ul>
     <ul class="drawer-more">
       <li><a href="#podcast">The Podcast</a></li>
@@ -259,12 +281,15 @@ footer a:hover{color:#fff}
    Lines in [brackets] are prompts for you to replace with your words.
    Each story has a cat (a section) and a sub (one of that section's subs ids).
    To add or rename sub-sections, edit the subs list in CATEGORIES.
+   Add guide:true to a story to also list it under Guides + Resources > Guides.
+   Lifestyle > Food is for new foods, restaurants, recipes and taste tests.
    ============================================================ */
 const CATEGORIES = [
   {id:'beauty', name:'Beauty', subs:[{id:'hair', name:'Hair'}, {id:'skincare', name:'Skincare'}, {id:'makeup', name:'Makeup'}, {id:'nails', name:'Nails'}, {id:'fragrance', name:'Fragrance'}]},
-  {id:'lifestyle', name:'Lifestyle', subs:[{id:'mom-and-wife', name:'Mom & Wife'}, {id:'motherhood', name:'Motherhood'}, {id:'travel', name:'Travel'}, {id:'content-creation', name:'Content Creation'}]},
-  {id:'health-wellness', name:'Health + Wellness', subs:[{id:'body', name:'Body'}, {id:'diy', name:'DIY'}, {id:'fitness', name:'Fitness'}, {id:'giving-back', name:'Giving Back'}, {id:'health', name:'Health'}, {id:'mind', name:'Mind'}, {id:'relationships', name:'Relationships'}, {id:'self-care', name:'Self-Care'}, {id:'soul', name:'Soul'}]},
-  {id:'home-living', name:'Home', subs:[{id:'decor', name:'Decor'}, {id:'organization', name:'Organization'}]}
+  {id:'health-wellness', name:'Health + Wellness', subs:[{id:'body', name:'Body'}, {id:'fitness', name:'Fitness'}, {id:'health', name:'Health'}, {id:'mind', name:'Mind'}, {id:'self-care', name:'Self-Care'}]},
+  {id:'lifestyle', name:'Lifestyle', subs:[{id:'mom-and-wife', name:'Mom & Wife'}, {id:'motherhood', name:'Motherhood'}, {id:'travel', name:'Travel'}, {id:'content-creation', name:'Content Creation'}, {id:'food', name:'Food'}]},
+  {id:'home-living', name:'Home', subs:[{id:'decor', name:'Decor'}, {id:'organization', name:'Organization'}]},
+  {id:'guides-resources', name:'Guides + Resources', subs:[{id:'guides', name:'Guides'}, {id:'shop-my-favorites', name:'Shop My Favorites'}, {id:'free-downloads', name:'Free Downloads'}]}
 ];
 
 const POSTS = [
@@ -284,7 +309,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'relaxed-hair-wash-day', cat:'beauty', sub:'hair', tone:'#EAEAEA',
+    slug:'relaxed-hair-wash-day', cat:'beauty', sub:'hair', guide:true, tone:'#EAEAEA',
     title:'My Relaxed Hair Wash Day, Step by Step',
     dek:'The routine, the products and the tools that keep my hair healthy between appointments.',
     photo:'Photo: wash day flat lay', date:'[Publish date]', read:'5 min read',
@@ -307,7 +332,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'amalfi-calm-rental', cat:'home-living', sub:'decor', tone:'#EDEDED',
+    slug:'amalfi-calm-rental', cat:'home-living', sub:'decor', guide:true, tone:'#EDEDED',
     title:'Bringing Amalfi Calm Into a Rental',
     dek:'Warm, coastal and renter-friendly: how I make every new house feel like home.',
     photo:'Photo: your living room', date:'[Publish date]', read:'5 min read',
@@ -344,34 +369,48 @@ const VERDICTS = [
   {name:'[Next product you test]', verdict:'[Yes / No]'}
 ];
 
-/* ---------- SHOP ----------
+/* ---------- GUIDES + RESOURCES ----------
+   The intro at the top of the Guides + Resources page: */
+const GUIDES_INTRO = 'Everything I use, love and have figured out along the way, all in one place.';
+
+/* ---------- SHOP MY FAVORITES ----------
    To add a product, copy one line in SHOP and change it.
-   section: one of the ids in SHOP_SECTIONS below
-   link:    your Amazon link (leave '' and it shows "Link coming soon")
+   section: beauty, health-wellness, lifestyle or home
+   store:   'amazon' or 'ltk' (sets the button: "Shop on Amazon" / "Shop on LTK")
+   link:    your affiliate link (leave '' and it shows "Link coming soon")
    img:     optional image address; leave '' for a grey placeholder
    brand:   brand name, shown in small capitals above the product name
    price:   optional, e.g. '$24.99'. Amazon prices change often, so leave it ''
             unless you keep it up to date (Amazon's rules require prices to be current)
    badge:   optional little label on the photo, e.g. "Racquel's Pick" or 'New'
-   note:    optional one short line on why you love it
-   To add or rename a sub-section, edit SHOP_SECTIONS. */
+   note:    optional one short line on why you love it */
 const SHOP_SECTIONS = [
-  {id:'home', name:'Home'},
-  {id:'fitness', name:'Fitness'},
   {id:'beauty', name:'Beauty'},
-  {id:'wellness', name:'Wellness'},
-  {id:'lifestyle', name:'Lifestyle'}
+  {id:'health-wellness', name:'Health + Wellness'},
+  {id:'lifestyle', name:'Lifestyle'},
+  {id:'home', name:'Home'}
 ];
 
 const SHOP = [
-  {section:'home', brand:'PanManner', name:'Natural Marble Table Lamp', price:'', badge:"Racquel's Pick", note:'Cordless, dimmable and the softest warm glow by the bed', link:'', img:''},
-  {section:'home', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'fitness', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'fitness', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'beauty', brand:'Revlon', name:'One-Step Brush Dryer', price:'', badge:'', note:'', link:'', img:''},
-  {section:'wellness', brand:'[Brand]', name:'Jade Stone Eye Mask', price:'', badge:'Favorite', note:'', link:'', img:''},
-  {section:'lifestyle', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'lifestyle', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''}
+  {section:'beauty', store:'amazon', brand:'Revlon', name:'One-Step Brush Dryer', price:'', badge:'', note:'', link:'', img:''},
+  {section:'beauty', store:'ltk', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'health-wellness', store:'amazon', brand:'[Brand]', name:'Jade Stone Eye Mask', price:'', badge:'Favorite', note:'', link:'', img:''},
+  {section:'health-wellness', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'lifestyle', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'lifestyle', store:'ltk', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'home', store:'amazon', brand:'PanManner', name:'Natural Marble Table Lamp', price:'', badge:"Racquel's Pick", note:'Cordless, dimmable and the softest warm glow by the bed', link:'', img:''},
+  {section:'home', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''}
+];
+
+/* ---------- FREE DOWNLOADS ----------
+   To add a download, copy one line and change it.
+   file: link to the PDF (upload it to the repo, e.g. 'downloads/wash-day-checklist.pdf',
+         or paste a Google Drive / Canva share link). Leave '' and the button shows "Coming soon".
+   img:  optional cover image address. */
+const DOWNLOADS = [
+  {title:'[Checklist title]', desc:'[One or two lines on what it helps with.]', file:'', img:''},
+  {title:'[Planner title]', desc:'[One or two lines on what it helps with.]', file:'', img:''},
+  {title:'[Routine title]', desc:'[One or two lines on what it helps with.]', file:'', img:''}
 ];
 
 /* ============================================================ */
@@ -381,8 +420,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const catName = id => (CATEGORIES.find(c => c.id === id) || {}).name || '';
 
 function navLinks(active){
-  const items = CATEGORIES.map(c => ({href:'#'+c.id, label:c.name, key:c.id}))
-    .concat([{href:'#verdicts', label:'Would I Do It Again?', key:'verdicts'}, {href:'#podcast', label:'Podcast', key:'podcast'}, {href:'#shop', label:'Shop', key:'shop'}]);
+  const items = CATEGORIES.map(c => ({href:'#'+c.id, label:c.name, key:c.id}));
   return items.map(i => `<a href="${i.href}"${i.key===active?' class="on" aria-current="page"':''}>${esc(i.label)}</a>`).join('');
 }
 function card(p){
@@ -449,7 +487,7 @@ function productCard(p){
     ${p.note ? `<p>${esc(p.note)}</p>` : ''}
     ${p.price ? `<div class="price">${esc(p.price)}</div>` : ''}
     <div class="buy">${p.link
-      ? `<a${out}>Shop on Amazon <svg width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h28M24 1l4 4-4 4"/></svg><span class="sr"> (opens Amazon in a new tab)</span></a>`
+      ? `<a${out}>Shop on ${p.store === 'ltk' ? 'LTK' : 'Amazon'} <svg width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h28M24 1l4 4-4 4"/></svg><span class="sr"> (opens in a new tab)</span></a>`
       : `<span>Link coming soon</span>`}</div>
   </article>`;
 }
@@ -457,30 +495,84 @@ function shopBlock(){
   const picks = SHOP.slice(0,4);
   if(!picks.length) return '';
   return `<section class="block" id="shop-sec" aria-labelledby="shh">
-    <div class="sec-head"><h2 id="shh">Shop My Favorites</h2><a class="link-under" href="#shop">Shop all</a></div>
+    <div class="sec-head"><h2 id="shh">Shop My Favorites</h2><a class="link-under" href="#guides-resources/shop-my-favorites">Shop all</a></div>
     <div class="pgrid">${picks.map(productCard).join('')}</div>
   </section>`;
 }
+const SHOP_URL = '#guides-resources/shop-my-favorites';
+function guidesSubnav(active){
+  const c = CATEGORIES.find(x => x.id === 'guides-resources');
+  return `<nav class="subnav" aria-label="Guides + Resources sub-sections">
+      <a href="#guides-resources"${!active?' class="on" aria-current="page"':''}>Overview</a>
+      ${c.subs.map(x => `<a href="#guides-resources/${x.id}"${x.id===active?' class="on" aria-current="page"':''}>${esc(x.name)}</a>`).join('')}
+    </nav>`;
+}
 function renderShop(sec){
+  if(sec && !SHOP_SECTIONS.some(c => c.id === sec)) sec = '';
   const opts = [{id:'', name:'All'}].concat(SHOP_SECTIONS)
     .map(t => `<option value="${t.id}"${t.id===sec?' selected':''}>${esc(t.name)}</option>`).join('');
   const groups = (sec ? SHOP_SECTIONS.filter(c => c.id === sec) : SHOP_SECTIONS)
-    .map(c => ({c, items: SHOP.filter(p => p.section === c.id)}))
-    .filter(g => sec || g.items.length);
+    .map(c => ({c, items: SHOP.filter(p => p.section === c.id)}));
   const body = groups.map(g => `<div class="shop-group">
       ${sec ? '' : `<h3>${esc(g.c.name)}</h3>`}
-      ${g.items.length ? `<div class="pgrid">${g.items.map(productCard).join('')}</div>` : `<p class="empty">New finds coming soon.</p>`}
+      ${g.items.length ? `<div class="pgrid">${g.items.map(productCard).join('')}</div>` : `<p class="empty">New favorites coming soon.</p>`}
     </div>`).join('');
   app.innerHTML = `<section class="block" aria-labelledby="shoph">
-    <div class="sec-head"><h2 id="shoph" style="font-size:56px">${sec ? 'Shop ' + esc(shopName(sec)) : 'Shop'}</h2></div>
-    <p class="amz">The things I actually use and love. As an Amazon Associate I earn from qualifying purchases.</p>
+    <div class="sec-head"><h2 id="shoph" style="font-size:56px">Shop My Favorites</h2></div>
+    ${guidesSubnav('shop-my-favorites')}
+    <p class="disclose-top">Some links on this page are affiliate links, which means I may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases.</p>
     <label for="shopSel" class="sr">Shop section</label>
     <div class="shop-select"><select id="shopSel">${opts}</select></div>
     ${body}
   </section>`;
   document.getElementById('shopSel').addEventListener('change', e => {
-    location.hash = e.target.value ? 'shop-' + e.target.value : 'shop';
+    location.hash = SHOP_URL.slice(1) + (e.target.value ? '/' + e.target.value : '');
   });
+}
+function downloadCard(d){
+  const pic = d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : 'Cover image';
+  return `<article class="dcard">
+    <div class="img${d.img?'':' empty-img'}">${pic}</div>
+    <h4>${esc(d.title)}</h4>
+    <p>${esc(d.desc)}</p>
+    <div class="buy">${d.file
+      ? `<a href="${esc(d.file)}" download target="_blank" rel="noopener">Download</a>`
+      : `<span aria-disabled="true">Coming soon</span>`}</div>
+  </article>`;
+}
+function renderDownloads(){
+  app.innerHTML = `<section class="block" aria-labelledby="dlh">
+    <div class="sec-head"><h2 id="dlh" style="font-size:56px">Free Downloads</h2></div>
+    ${guidesSubnav('free-downloads')}
+    <p class="lede" style="margin-bottom:40px">Checklists, planners and routines to make life a little easier. Free, always.</p>
+    ${DOWNLOADS.length ? `<div class="pgrid">${DOWNLOADS.map(downloadCard).join('')}</div>` : `<p class="empty">New posts coming soon.</p>`}
+  </section>${newsBlock()}`;
+}
+function renderGuidesList(){
+  const posts = POSTS.filter(p => p.guide || (p.cat === 'guides-resources' && p.sub === 'guides'));
+  app.innerHTML = `<section class="block" aria-labelledby="gh">
+    <div class="sec-head"><h2 id="gh" style="font-size:56px">Guides</h2><a class="link-under" href="#home">All stories</a></div>
+    ${guidesSubnav('guides')}
+    ${posts.length ? `<div class="grid">${posts.map(card).join('')}</div>` : `<p class="empty">New posts coming soon.</p>`}
+  </section>${newsBlock()}`;
+}
+function renderGuidesHome(){
+  const tiles = [
+    {href:'#guides-resources/guides', name:'Guides', desc:'Step-by-step how-tos, from wash day to setting up a rental.'},
+    {href:SHOP_URL, name:'Shop My Favorites', desc:'The beauty, wellness, lifestyle and home finds I actually use.'},
+    {href:'#guides-resources/free-downloads', name:'Free Downloads', desc:'Checklists, planners and routines you can print and keep.'}
+  ];
+  app.innerHTML = `<section class="block" aria-labelledby="grh">
+    <div class="sec-head"><h2 id="grh" style="font-size:56px">Guides + Resources</h2></div>
+    ${guidesSubnav('')}
+    <p class="lede gr-intro">${esc(GUIDES_INTRO)}</p>
+    <div class="gr-tiles">${tiles.map(t => `<a class="gr-tile" href="${t.href}">
+      <span class="eyebrow">Guides + Resources</span>
+      <span class="gr-name">${esc(t.name)}</span>
+      <span class="gr-desc">${esc(t.desc)}</span>
+      <span class="link-under">Explore</span>
+    </a>`).join('')}</div>
+  </section>${newsBlock()}`;
 }
 
 function renderHome(){
@@ -518,7 +610,7 @@ function renderCategory(id, sub){
   app.innerHTML = `<section class="block" aria-labelledby="ch">
     <div class="sec-head"><h2 id="ch" style="font-size:56px">${esc(subObj ? subObj.name : c.name)}</h2><a class="link-under" href="#home">All stories</a></div>
     ${subnav}
-    ${posts.length ? `<div class="grid">${posts.map(card).join('')}</div>` : `<p class="empty">New stories coming soon.</p>`}
+    ${posts.length ? `<div class="grid">${posts.map(card).join('')}</div>` : `<p class="empty">New posts coming soon.</p>`}
   </section>${newsBlock()}`;
 }
 function renderNewsletter(){
@@ -574,10 +666,17 @@ function route(initial){
   const h = (location.hash || '#home').slice(1);
   let active = '';
   if(h.startsWith('story-')) renderStory(h.slice(6));
+  else if(h.split('/')[0] === 'guides-resources'){
+    const [, sid, extra] = h.split('/'); active = 'guides-resources';
+    if(sid === 'shop-my-favorites') renderShop(extra || '');
+    else if(sid === 'free-downloads') renderDownloads();
+    else if(sid === 'guides') renderGuidesList();
+    else renderGuidesHome();
+  }
   else if(CATEGORIES.some(c => c.id === h.split('/')[0])){ const [cid, sid] = h.split('/'); renderCategory(cid, sid); active = cid; }
   else if(h === 'newsletter') renderNewsletter();
   else if(h === 'about') renderAbout();
-  else if(h === 'shop' || (h.startsWith('shop-') && SHOP_SECTIONS.some(c => 'shop-' + c.id === h))){ renderShop(h === 'shop' ? '' : h.slice(5)); active = 'shop'; }
+  else if(h === 'shop' || h.startsWith('shop-')){ renderShop(''); active = 'guides-resources'; }
   else if(h === 'verdicts' || h === 'podcast'){
     renderHome(); active = h;
     const el = document.getElementById(h + '-sec');
