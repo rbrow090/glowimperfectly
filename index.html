@@ -171,6 +171,9 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 
 .split{display:flex;flex-wrap:wrap;gap:48px;align-items:center}
 .split .img{flex:1 1 420px;min-width:0;height:420px}
+.podcast-art{flex:1 1 420px;min-width:0;max-width:520px;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block}
+.ph-img{padding:0;overflow:hidden}
+.ph-img img{width:100%;height:100%;object-fit:cover;display:block}
 .split .txt{flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
 .split h2{margin:0;font-family:var(--serif);font-weight:500;font-size:44px;line-height:1.1}
 
@@ -315,6 +318,7 @@ footer a:hover{color:#fff}
    Each story has a cat (a section) and a sub (one of that section's subs ids).
    date: the publish date, e.g. '2026-11-24' or 'Nov 24, 2026'. Section, sub-section, tag and
    Guides pages list stories newest first; stories without a real date come after, in list order.
+   img: optional photo for the story card and top of the story, e.g. 'images/my-photo.jpg'.
    Optional tags: e.g. tags:['comfort-food'], using ids from TAGS below. Tags show at the
    bottom of the story and link to a page listing every story with that tag.
    To add or rename sub-sections, edit the subs list in CATEGORIES.
@@ -398,7 +402,7 @@ const POSTS = [
     slug:'podcast-studio', cat:'lifestyle', sub:'content-creation', tone:'#E3E3E3',
     title:'Inside My Spare-Room Podcast Studio',
     dek:'The cameras, the mic and the lighting I use to film from home.',
-    photo:'Photo: studio wide shot', date:'[Publish date]', read:'4 min read',
+    photo:'Photo: studio wide shot', img:'images/podcast-cover.jpg', date:'[Publish date]', read:'4 min read',
     body:[
       {p:'[Why you built the studio and how you set it up.]'}
     ]
@@ -508,7 +512,7 @@ function navLinks(active){
 }
 function card(p){
   return `<article class="card">
-    <a href="#story-${p.slug}" class="img ph" style="background:${p.tone}" aria-hidden="true" tabindex="-1">${esc(p.photo)}</a>
+    <a href="#story-${p.slug}" class="img ph${p.img?' ph-img':''}" style="background:${p.tone}" aria-hidden="true" tabindex="-1">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : esc(p.photo)}</a>
     <div class="eyebrow">${esc(catName(p.cat))}</div>
     <h3><a href="#story-${p.slug}">${esc(p.title)}</a></h3>
     <div class="meta">By Racquel Melissa</div>
@@ -531,7 +535,7 @@ function verdictsBlock(){
 function podcastBlock(){
   return `<section class="block" id="podcast-sec" aria-labelledby="ph">
     <div class="split">
-      <div class="img ph" style="background:#CFCFCF;color:#222222">Photo: you at the mic in your studio</div>
+      <img class="podcast-art" src="images/podcast-cover.jpg" alt="Glow Imperfectly: The Podcast cover art" width="1000" height="1000" loading="lazy">
       <div class="txt">
         <div class="eyebrow">The Podcast</div>
         <h2 id="ph">Get Ready &amp; Chat</h2>
@@ -683,7 +687,7 @@ function renderHome(){
   const rest = POSTS.filter(p => p !== f);
   app.innerHTML = `
   <section class="feature" aria-label="Featured story">
-    <a href="#story-${f.slug}" class="img ph" style="background:${f.tone}" aria-hidden="true" tabindex="-1">${esc(f.photo)}</a>
+    <a href="#story-${f.slug}" class="img ph${f.img?' ph-img':''}" style="background:${f.tone}" aria-hidden="true" tabindex="-1">${f.img ? `<img src="${esc(f.img)}" alt="" loading="lazy">` : esc(f.photo)}</a>
     <div class="txt">
       <div class="eyebrow">${esc(catName(f.cat))} · Featured</div>
       <h1>${esc(f.title)}</h1>
@@ -757,7 +761,7 @@ function renderStory(slug){
     <h1>${esc(p.title)}</h1>
     <p class="lede">${esc(p.dek)}</p>
     <div class="meta" style="margin-top:16px">By Racquel Melissa · ${esc(p.date)} · ${esc(p.read)}</div>
-    <div class="hero ph" style="background:${p.tone}">${esc(p.photo)}</div>
+    <div class="hero ph${p.img?' ph-img':''}" style="background:${p.tone}">${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.photo)}">` : esc(p.photo)}</div>
     <div class="body">${body}</div>
     ${p.verdict ? `<div class="verdict-box"><div class="eyebrow">Would I do it again?</div><div class="serif">${esc(p.verdict)}</div></div>` : ''}
     ${tagList(p)}
