@@ -105,11 +105,19 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .vcard .img{height:220px;background:#F2F2F2;align-items:center;justify-content:center}
 .vcard h3{margin:0;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2}
 .vrow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.shop-select{position:relative;max-width:420px;margin:0 0 48px}
-.shop-select select{appearance:none;-webkit-appearance:none;width:100%;min-height:52px;padding:0 52px 0 20px;border:1px solid #BBBBBB;border-radius:0;background:var(--bg);color:var(--ink);font:14px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
-.shop-select select:focus{outline:2px solid var(--ink);outline-offset:2px}
-.shop-select::after{content:'';position:absolute;right:22px;top:50%;margin-top:-3px;border:7px solid transparent;border-top:8px solid var(--ink);border-bottom:0;pointer-events:none}
-.shop-group{margin-bottom:64px}
+.shop-jump{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 56px}
+.shop-jump-label{width:100%;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.shop-jump button,.shop-subnav button{min-height:44px;padding:0 18px;border:1px solid var(--ink);background:var(--bg);color:var(--ink);font:12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.shop-jump button:hover{background:var(--ink);color:var(--bg)}
+.shop-subnav{display:flex;flex-wrap:wrap;gap:4px 24px;margin:-16px 0 36px}
+.shop-subnav button{min-height:40px;padding:0;border:none;border-bottom:1px solid transparent;color:var(--soft);font-size:12px}
+.shop-subnav button:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.shop-group,.shop-sub,#shoph{scroll-margin-top:calc(var(--head-h,120px) + 16px)}
+.shop-sub{margin-bottom:48px}
+.shop-sub-title{margin:0 0 24px;font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.shop-top{display:block;margin:0 0 0 auto;min-height:44px;padding:0;background:none;border:none;color:var(--muted);font:12px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.shop-top:hover{color:var(--ink)}
+.shop-group{margin-bottom:72px}
 .shop-group h3{margin:0 0 32px;padding-bottom:12px;border-bottom:1px solid var(--line);font-family:var(--serif);font-weight:500;font-size:32px}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:56px 28px}
 .pcard{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -184,7 +192,8 @@ footer a:hover{color:#fff}
   .feature{padding-top:28px}
 }
 @media (max-width:600px){
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 16px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 16px}
+  .shop-jump button{flex:1 1 calc(50% - 5px);padding:0 8px}
   .pcard h4{font-size:20px}
   .pcard .brand{font-size:11px;margin-top:14px}
   .pcard .badge{font-size:10px;padding:6px 8px}
@@ -374,32 +383,70 @@ const VERDICTS = [
 const GUIDES_INTRO = 'Everything I use, love and have figured out along the way, all in one place.';
 
 /* ---------- SHOP MY FAVORITES ----------
+   The page is built from the menu (CATEGORIES above): every sub-section of
+   Beauty, Health + Wellness, Lifestyle and Home gets its own category here,
+   so a new sub-section added to the menu shows up automatically (with
+   placeholder cards until you add products for it).
+   To leave a sub-section off this page, add it to SHOP_EXCLUDE as 'section/sub'.
+
    To add a product, copy one line in SHOP and change it.
-   section: beauty, health-wellness, lifestyle or home
-   store:   'amazon' or 'ltk' (sets the button: "Shop on Amazon" / "Shop on LTK")
-   link:    your affiliate link (leave '' and it shows "Link coming soon")
+   section: beauty, health-wellness, lifestyle or home-living (the menu section id)
+   sub:     the sub-section id from CATEGORIES, e.g. 'skincare' or 'decor'
+   store:   'amazon' or 'ltk' sets the button to "Shop on Amazon" / "Shop on LTK";
+            leave '' for a plain "Shop" button
+   link:    your affiliate link. '#' = placeholder (button does nothing yet);
+            '' shows "Link coming soon"
    img:     optional image address; leave '' for a grey placeholder
-   brand:   brand name, shown in small capitals above the product name
+   brand:   optional brand name, shown in small capitals above the product name
    price:   optional, e.g. '$24.99'. Amazon prices change often, so leave it ''
             unless you keep it up to date (Amazon's rules require prices to be current)
    badge:   optional little label on the photo, e.g. "Racquel's Pick" or 'New'
    note:    optional one short line on why you love it */
-const SHOP_SECTIONS = [
-  {id:'beauty', name:'Beauty'},
-  {id:'health-wellness', name:'Health + Wellness'},
-  {id:'lifestyle', name:'Lifestyle'},
-  {id:'home', name:'Home'}
-];
+const SHOP_SKIP_SECTIONS = ['guides-resources'];
+const SHOP_EXCLUDE = ['lifestyle/food'];
 
 const SHOP = [
-  {section:'beauty', store:'amazon', brand:'Revlon', name:'One-Step Brush Dryer', price:'', badge:'', note:'', link:'', img:''},
-  {section:'beauty', store:'ltk', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'health-wellness', store:'amazon', brand:'[Brand]', name:'Jade Stone Eye Mask', price:'', badge:'Favorite', note:'', link:'', img:''},
-  {section:'health-wellness', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'lifestyle', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'lifestyle', store:'ltk', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
-  {section:'home', store:'amazon', brand:'PanManner', name:'Natural Marble Table Lamp', price:'', badge:"Racquel's Pick", note:'Cordless, dimmable and the softest warm glow by the bed', link:'', img:''},
-  {section:'home', store:'amazon', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''}
+  /* beauty */
+  {section:'beauty', sub:'hair', store:'amazon', brand:'Revlon', name:'One-Step Brush Dryer', note:'', link:'', img:'', price:'', badge:''},
+  {section:'beauty', sub:'hair', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'hair', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'skincare', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'skincare', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'skincare', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'makeup', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'makeup', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'nails', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'nails', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'fragrance', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'beauty', sub:'fragrance', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  /* health-wellness */
+  {section:'health-wellness', sub:'body', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'body', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'fitness', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'fitness', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'health', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'health', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'mind', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'mind', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'self-care', store:'amazon', brand:'', name:'Jade Stone Eye Mask', note:'', link:'', img:'', price:'', badge:'Favorite'},
+  {section:'health-wellness', sub:'self-care', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'health-wellness', sub:'self-care', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  /* lifestyle */
+  {section:'lifestyle', sub:'mom-and-wife', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'mom-and-wife', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'motherhood', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'motherhood', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'travel', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'travel', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'content-creation', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'content-creation', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  /* home-living */
+  {section:'home-living', sub:'decor', store:'amazon', brand:'PanManner', name:'Natural Marble Table Lamp', note:'Cordless, dimmable and the softest warm glow by the bed', link:'', img:'', price:'', badge:"Racquel's Pick"},
+  {section:'home-living', sub:'decor', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'home-living', sub:'decor', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'home-living', sub:'organization', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'home-living', sub:'organization', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'home-living', sub:'organization', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''}
 ];
 
 /* ---------- FREE DOWNLOADS ----------
@@ -473,9 +520,15 @@ function newsBlock(){
   </div></section>`;
 }
 
-const shopName = id => (SHOP_SECTIONS.find(c => c.id === id) || {}).name || '';
+const shopTree = () => CATEGORIES
+  .filter(c => !SHOP_SKIP_SECTIONS.includes(c.id))
+  .map(c => ({id:c.id, name:c.name, subs:(c.subs || []).filter(x => !SHOP_EXCLUDE.includes(c.id + '/' + x.id))}))
+  .filter(c => c.subs.length);
+const shopPlaceholder = (section, sub) => ({section, sub, store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''});
 function productCard(p){
-  const out = p.link ? ` href="${esc(p.link)}" target="_blank" rel="sponsored noopener noreferrer"` : '';
+  const ph = p.link === '#';
+  const out = !p.link ? '' : ph ? ' href="#" data-placeholder' : ` href="${esc(p.link)}" target="_blank" rel="sponsored noopener noreferrer"`;
+  const label = p.store === 'ltk' ? 'Shop on LTK' : p.store === 'amazon' ? 'Shop on Amazon' : 'Shop';
   const pic = p.img
     ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
     : 'Product photo';
@@ -487,12 +540,14 @@ function productCard(p){
     ${p.note ? `<p>${esc(p.note)}</p>` : ''}
     ${p.price ? `<div class="price">${esc(p.price)}</div>` : ''}
     <div class="buy">${p.link
-      ? `<a${out}>Shop on ${p.store === 'ltk' ? 'LTK' : 'Amazon'} <svg width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h28M24 1l4 4-4 4"/></svg><span class="sr"> (opens in a new tab)</span></a>`
+      ? `<a${out}>${label} <svg width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h28M24 1l4 4-4 4"/></svg>${ph ? '' : '<span class="sr"> (opens in a new tab)</span>'}</a>`
       : `<span>Link coming soon</span>`}</div>
   </article>`;
 }
 function shopBlock(){
-  const picks = SHOP.slice(0,4);
+  const real = SHOP.filter(p => p.link && p.link !== '#');
+  const named = SHOP.filter(p => !p.name.startsWith('['));
+  const picks = (real.length >= 4 ? real : real.concat(named.filter(p => !real.includes(p)), SHOP)).filter((p, i, a) => a.indexOf(p) === i).slice(0,4);
   if(!picks.length) return '';
   return `<section class="block" id="shop-sec" aria-labelledby="shh">
     <div class="sec-head"><h2 id="shh">Shop My Favorites</h2><a class="link-under" href="#guides-resources/shop-my-favorites">Shop all</a></div>
@@ -507,27 +562,37 @@ function guidesSubnav(active){
       ${c.subs.map(x => `<a href="#guides-resources/${x.id}"${x.id===active?' class="on" aria-current="page"':''}>${esc(x.name)}</a>`).join('')}
     </nav>`;
 }
-function renderShop(sec){
-  if(sec && !SHOP_SECTIONS.some(c => c.id === sec)) sec = '';
-  const opts = [{id:'', name:'All'}].concat(SHOP_SECTIONS)
-    .map(t => `<option value="${t.id}"${t.id===sec?' selected':''}>${esc(t.name)}</option>`).join('');
-  const groups = (sec ? SHOP_SECTIONS.filter(c => c.id === sec) : SHOP_SECTIONS)
-    .map(c => ({c, items: SHOP.filter(p => p.section === c.id)}));
-  const body = groups.map(g => `<div class="shop-group">
-      ${sec ? '' : `<h3>${esc(g.c.name)}</h3>`}
-      ${g.items.length ? `<div class="pgrid">${g.items.map(productCard).join('')}</div>` : `<p class="empty">New favorites coming soon.</p>`}
+function renderShop(jump){
+  const tree = shopTree();
+  const jumpNav = `<nav class="shop-jump" aria-label="Jump to a section">
+      <span class="shop-jump-label">Jump to</span>
+      ${tree.map(c => `<button type="button" data-jump="shop-${c.id}">${esc(c.name)}</button>`).join('')}
+    </nav>`;
+  const body = tree.map(c => `<div class="shop-group" id="shop-${c.id}">
+      <h3>${esc(c.name)}</h3>
+      <div class="shop-subnav">${c.subs.map(x => `<button type="button" data-jump="shop-${c.id}-${x.id}">${esc(x.name)}</button>`).join('')}</div>
+      ${c.subs.map(x => {
+        let items = SHOP.filter(p => p.section === c.id && p.sub === x.id);
+        if(!items.length) items = [shopPlaceholder(c.id, x.id), shopPlaceholder(c.id, x.id)];
+        return `<div class="shop-sub" id="shop-${c.id}-${x.id}">
+          <h4 class="shop-sub-title">${esc(x.name)}</h4>
+          <div class="pgrid">${items.map(productCard).join('')}</div>
+        </div>`;
+      }).join('')}
+      <button type="button" class="shop-top" data-jump="shoph">Back to top ↑</button>
     </div>`).join('');
   app.innerHTML = `<section class="block" aria-labelledby="shoph">
     <div class="sec-head"><h2 id="shoph" style="font-size:56px">Shop My Favorites</h2></div>
     ${guidesSubnav('shop-my-favorites')}
     <p class="disclose-top">Some links on this page are affiliate links, which means I may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases.</p>
-    <label for="shopSel" class="sr">Shop section</label>
-    <div class="shop-select"><select id="shopSel">${opts}</select></div>
+    ${jumpNav}
     ${body}
   </section>`;
-  document.getElementById('shopSel').addEventListener('change', e => {
-    location.hash = SHOP_URL.slice(1) + (e.target.value ? '/' + e.target.value : '');
-  });
+  app.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
+    const el = document.getElementById(b.dataset.jump);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+  if(jump){ const el = document.getElementById('shop-' + jump); if(el) setTimeout(() => el.scrollIntoView(), 0); }
 }
 function downloadCard(d){
   const pic = d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : 'Cover image';
@@ -668,7 +733,7 @@ function route(initial){
   if(h.startsWith('story-')) renderStory(h.slice(6));
   else if(h.split('/')[0] === 'guides-resources'){
     const [, sid, extra] = h.split('/'); active = 'guides-resources';
-    if(sid === 'shop-my-favorites') renderShop(extra || '');
+    if(sid === 'shop-my-favorites'){ renderShop(extra === 'home' ? 'home-living' : (extra || '')); if(extra){ document.getElementById('mainNav').innerHTML = navLinks(active); closeDrawer(); bindNews(); return; } }
     else if(sid === 'free-downloads') renderDownloads();
     else if(sid === 'guides') renderGuidesList();
     else renderGuidesHome();
@@ -740,6 +805,7 @@ window.addEventListener('scroll', onScroll, {passive:true});
 if('ResizeObserver' in window) new ResizeObserver(setHeadH).observe(siteHead); else window.addEventListener('resize', setHeadH);
 setHeadH(); onScroll();
 if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+document.addEventListener('click', e => { if(e.target.closest('a[data-placeholder]')) e.preventDefault(); });
 window.addEventListener('hashchange', () => route());
 route(true);
 </script>
