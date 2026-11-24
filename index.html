@@ -64,28 +64,30 @@ nav.main a.on{border-bottom-color:var(--ink)}
 body.menu-open{overflow:hidden}
 .drawer-head{padding-top:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
 .drawer-body{max-width:640px;margin:0 auto;padding:20px 24px 48px}
-.drawer-feature{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.drawer-title{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:4px 0 20px}
+.drawer-title h2{margin:0;font-family:var(--serif);font-weight:500;font-size:38px;line-height:1}
+.close-text{min-height:44px;padding:0;background:none;border:none;color:var(--ink);font:500 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.close-text:hover{color:var(--muted)}
+.drawer-feature{display:flex;align-items:center;justify-content:center;padding:12px 16px;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.2;letter-spacing:.12em;text-transform:uppercase}
 .drawer-feature:hover{background:#333333;color:#fff}
-/* two panels side by side; .sub-open slides to the second */
-.panes-clip{overflow:hidden;margin-top:12px}
-.panes{display:flex;width:200%;transform:translateX(0);transition:transform .25s ease}
-.drawer.sub-open .panes{transform:translateX(-50%)}
-.pane{width:50%;flex:none}
-.pane[hidden]{display:block;visibility:hidden}
-@media (prefers-reduced-motion: reduce){ .panes{transition:none} }
-.m-list{list-style:none;margin:0;padding:6px 0;border-bottom:1px solid var(--line)}
-.m-list li{margin:0}
-.m-item{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:44px;padding:0;background:none;border:none;color:var(--ink);font:400 16px/1.2 var(--sans);letter-spacing:0;text-transform:none;text-align:left;cursor:pointer}
+.m-list{list-style:none;margin:0;padding:6px 0}
+.m-cats{margin-top:24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.m-more{padding-top:6px}
+.m-item{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:44px;padding:0;background:none;border:none;color:var(--ink);font:400 14px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;text-align:left;cursor:pointer}
 .m-item:hover{color:var(--muted)}
-.m-item .chev{flex:none;width:8px;height:8px;margin-right:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
-.m-more{border-bottom:none;padding-top:10px}
-.m-more .m-item{font-size:15px;color:var(--soft)}
-.sub-head{display:flex;align-items:center;gap:6px;margin:4px 0 6px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.sub-back{display:flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;margin-left:-12px;background:none;border:none;color:var(--ink);cursor:pointer}
-.sub-back:hover{color:var(--muted)}
-.sub-title{margin:0;font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.1}
-.sub-list{border-bottom:none}
-.m-item.m-all{font-weight:500}
+.m-item .plus{position:relative;flex:none;width:14px;height:14px;margin-right:4px}
+.m-item .plus::before,.m-item .plus::after{content:'';position:absolute;left:0;top:50%;width:14px;height:1px;background:currentColor;transition:transform .25s ease}
+.m-item .plus::after{transform:rotate(90deg)}
+.m-item[aria-expanded="true"] .plus::after{transform:rotate(0)}
+/* dropdown: animates height with grid rows */
+.dd{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .25s ease,visibility .25s}
+.dd.open{grid-template-rows:1fr;visibility:visible}
+.dd > ul{overflow:hidden;min-height:0;list-style:none;margin:0;padding:0 0 0 16px}
+.dd.open > ul{padding-bottom:8px}
+.dd a{display:flex;align-items:center;min-height:40px;font-size:14px;letter-spacing:0;text-transform:none;color:var(--ink)}
+.dd a:hover{color:var(--muted)}
+.dd a.m-all{font-weight:500}
+@media (prefers-reduced-motion: reduce){ .dd,.m-item .plus::before,.m-item .plus::after{transition:none} }
 .drawer-social{display:flex;gap:28px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 .drawer-social a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:-10px}
 .drawer-social svg{width:19px;height:19px}
@@ -261,29 +263,18 @@ footer a:hover{color:#fff}
     </div>
   </div>
   <div class="drawer-body">
-    <a class="drawer-feature" href="#guides-resources/shop-my-favorites">Shop My Favorites</a>
-    <div class="panes-clip">
-      <div class="panes">
-        <div class="pane" id="paneMain">
-          <ul class="m-list" id="drawerLinks"></ul>
-          <ul class="m-list m-more">
-            <li><a class="m-item" href="#podcast">The Podcast</a></li>
-            <li><a class="m-item" href="#verdicts">Would I Do It Again?</a></li>
-            <li><a class="m-item" href="#about">About</a></li>
-            <li><a class="m-item" href="#newsletter">Newsletter</a></li>
-          </ul>
-        </div>
-        <div class="pane" id="paneSub" hidden>
-          <div class="sub-head">
-            <button class="sub-back" id="subBack" aria-label="Back to main menu">
-              <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M21 7H2M7 1L1 7l6 6"/></svg>
-            </button>
-            <h2 class="sub-title" id="subTitle" tabindex="-1"></h2>
-          </div>
-          <ul class="m-list sub-list" id="subLinks"></ul>
-        </div>
-      </div>
+    <div class="drawer-title">
+      <h2>Menu</h2>
+      <button class="close-text" id="closeText">Close menu</button>
     </div>
+    <a class="drawer-feature" href="#guides-resources/shop-my-favorites">Shop My Favorites</a>
+    <ul class="m-list m-cats" id="drawerLinks"></ul>
+    <ul class="m-list m-more">
+      <li><a class="m-item" href="#about">About</a></li>
+      <li><a class="m-item" href="#podcast">Podcast</a></li>
+      <li><a class="m-item" href="#verdicts">Would I Do It Again?</a></li>
+      <li><a class="m-item" href="#newsletter">Newsletter</a></li>
+    </ul>
     <div class="drawer-social">
       <a href="https://www.instagram.com/racquelmelissa" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
       <a href="https://www.tiktok.com/@racquelmelissa" aria-label="TikTok"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 2.2 1.8 3.7 4 3.9v3.1c-1.5.1-2.9-.4-4-1.2v6.1c0 3.4-2.6 6.1-6 6.1s-6-2.6-6-6 2.8-6.1 6.3-5.9v3.2c-1.6-.3-3.1.9-3.1 2.6 0 1.5 1.2 2.8 2.8 2.8 1.6 0 2.8-1.2 2.8-3V3h3.2z"/></svg></a>
@@ -863,38 +854,30 @@ function bindNews(){
 }
 
 const drawer = document.getElementById('drawer'), menuBtn = document.getElementById('menuBtn');
-const paneMain = document.getElementById('paneMain'), paneSub = document.getElementById('paneSub');
-let subFrom = null;
 document.getElementById('drawerLinks').innerHTML = CATEGORIES.map(c => (c.subs && c.subs.length)
-  ? `<li><button class="m-item" data-sub="${c.id}" aria-controls="paneSub">${esc(c.name)}<span class="chev" aria-hidden="true"></span></button></li>`
+  ? `<li><button class="m-item" aria-expanded="false" aria-controls="dd-${c.id}">${esc(c.name)}<span class="plus" aria-hidden="true"></span></button>
+      <div class="dd" id="dd-${c.id}"><ul>
+        <li><a class="m-all" href="#${c.id}">All ${esc(c.name)}</a></li>
+        ${c.subs.map(x => `<li><a href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('')}
+      </ul></div></li>`
   : `<li><a class="m-item" href="#${c.id}">${esc(c.name)}</a></li>`).join('');
-function openSub(id, btn){
-  const c = CATEGORIES.find(x => x.id === id); if(!c) return;
-  subFrom = btn;
-  document.getElementById('subTitle').textContent = c.name;
-  document.getElementById('subLinks').innerHTML = `<li><a class="m-item m-all" href="#${c.id}">All ${esc(c.name)}</a></li>`
-    + c.subs.map(x => `<li><a class="m-item" href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('');
-  paneSub.hidden = false; paneMain.setAttribute('aria-hidden', 'true'); paneMain.inert = true; paneSub.inert = false;
-  drawer.classList.add('sub-open'); drawer.scrollTop = 0;
-  document.getElementById('subTitle').focus({preventScroll:true});
+function setDropdown(btn, open){
+  btn.setAttribute('aria-expanded', String(open));
+  document.getElementById(btn.getAttribute('aria-controls')).classList.toggle('open', open);
 }
-function closeSub(focusBack){
-  drawer.classList.remove('sub-open');
-  paneMain.removeAttribute('aria-hidden'); paneMain.inert = false; paneSub.inert = true;
-  const done = () => { if(!drawer.classList.contains('sub-open')) paneSub.hidden = true; };
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches) done(); else setTimeout(done, 260);
-  if(focusBack && subFrom) subFrom.focus({preventScroll:true});
-}
+function collapseAll(){ document.querySelectorAll('#drawerLinks [aria-expanded="true"]').forEach(b => setDropdown(b, false)); }
 document.getElementById('drawerLinks').addEventListener('click', e => {
-  const b = e.target.closest('[data-sub]'); if(b) openSub(b.dataset.sub, b);
+  const b = e.target.closest('button[aria-controls]'); if(!b) return;
+  const open = b.getAttribute('aria-expanded') !== 'true';
+  collapseAll();               // only one open at a time
+  if(open) setDropdown(b, true);
 });
-document.getElementById('subBack').addEventListener('click', () => closeSub(true));
-paneSub.inert = true;
-function closeDrawer(){ if(drawer.classList.contains('sub-open')) closeSub(false); drawer.classList.remove('open'); document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); }
+function closeDrawer(){ collapseAll(); drawer.classList.remove('open'); document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); }
 menuBtn.addEventListener('click', () => { drawer.classList.add('open'); document.body.classList.add('menu-open'); menuBtn.setAttribute('aria-expanded','true'); });
 document.getElementById('closeBtn').addEventListener('click', () => { closeDrawer(); menuBtn.focus(); });
 drawer.addEventListener('click', e => { if(e.target.closest('a')) closeDrawer(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && drawer.classList.contains('open')){ if(drawer.classList.contains('sub-open')) closeSub(true); else { closeDrawer(); menuBtn.focus(); } } });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && drawer.classList.contains('open')){ closeDrawer(); menuBtn.focus(); } });
+document.getElementById('closeText').addEventListener('click', () => { closeDrawer(); menuBtn.focus(); });
 
 const searchBtn = document.getElementById('searchBtn'), searchForm = document.getElementById('searchForm');
 searchBtn.addEventListener('click', () => {
