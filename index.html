@@ -319,6 +319,7 @@ footer a:hover{color:#fff}
    date: the publish date, e.g. '2026-11-24' or 'Nov 24, 2026'. Section, sub-section, tag and
    Guides pages list stories newest first; stories without a real date come after, in list order.
    img: optional photo for the story card and top of the story, e.g. 'images/my-photo.jpg'.
+   imgPos: optional focus point when the photo is cropped, e.g. '50% 15%' keeps more of the top.
    Optional tags: e.g. tags:['comfort-food'], using ids from TAGS below. Tags show at the
    bottom of the story and link to a page listing every story with that tag.
    To add or rename sub-sections, edit the subs list in CATEGORIES.
@@ -344,7 +345,7 @@ const POSTS = [
     slug:'lifting-confidence', cat:'health-wellness', sub:'fitness', featured:true, tone:'#E0E0E0',
     title:'How Lifting Weights Rebuilt My Confidence',
     dek:"I didn't start strength training to change my body. I started because I'd stopped recognizing myself.",
-    photo:'Photo: you, mid-lift in the gym', date:'[Publish date]', read:'6 min read',
+    photo:'Photo: you, mid-lift in the gym', img:'images/lifting-confidence.jpg', imgPos:'50% 38%', date:'[Publish date]', read:'6 min read',
     body:[
       {p:"[Open with the moment you realized you'd stopped recognizing yourself. Where were you? What did it feel like?]"},
       {h:'Where I started'},
@@ -512,7 +513,7 @@ function navLinks(active){
 }
 function card(p){
   return `<article class="card">
-    <a href="#story-${p.slug}" class="img ph${p.img?' ph-img':''}" style="background:${p.tone}" aria-hidden="true" tabindex="-1">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : esc(p.photo)}</a>
+    <a href="#story-${p.slug}" class="img ph${p.img?' ph-img':''}" style="background:${p.tone}" aria-hidden="true" tabindex="-1">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" style="object-position:${esc(p.imgPos||'50% 50%')}">` : esc(p.photo)}</a>
     <div class="eyebrow">${esc(catName(p.cat))}</div>
     <h3><a href="#story-${p.slug}">${esc(p.title)}</a></h3>
     <div class="meta">By Racquel Melissa</div>
@@ -687,7 +688,7 @@ function renderHome(){
   const rest = POSTS.filter(p => p !== f);
   app.innerHTML = `
   <section class="feature" aria-label="Featured story">
-    <a href="#story-${f.slug}" class="img ph${f.img?' ph-img':''}" style="background:${f.tone}" aria-hidden="true" tabindex="-1">${f.img ? `<img src="${esc(f.img)}" alt="" loading="lazy">` : esc(f.photo)}</a>
+    <a href="#story-${f.slug}" class="img ph${f.img?' ph-img':''}" style="background:${f.tone}" aria-hidden="true" tabindex="-1">${f.img ? `<img src="${esc(f.img)}" alt="" style="object-position:${esc(f.imgPos||'50% 50%')}">` : esc(f.photo)}</a>
     <div class="txt">
       <div class="eyebrow">${esc(catName(f.cat))} · Featured</div>
       <h1>${esc(f.title)}</h1>
@@ -761,7 +762,7 @@ function renderStory(slug){
     <h1>${esc(p.title)}</h1>
     <p class="lede">${esc(p.dek)}</p>
     <div class="meta" style="margin-top:16px">By Racquel Melissa · ${esc(p.date)} · ${esc(p.read)}</div>
-    <div class="hero ph${p.img?' ph-img':''}" style="background:${p.tone}">${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.photo)}">` : esc(p.photo)}</div>
+    <div class="hero ph${p.img?' ph-img':''}" style="background:${p.tone}">${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.photo)}" style="object-position:${esc(p.imgPos||'50% 50%')}">` : esc(p.photo)}</div>
     <div class="body">${body}</div>
     ${p.verdict ? `<div class="verdict-box"><div class="eyebrow">Would I do it again?</div><div class="serif">${esc(p.verdict)}</div></div>` : ''}
     ${tagList(p)}
