@@ -90,21 +90,28 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .vcard .img{height:220px;background:#F2F2F2;align-items:center;justify-content:center}
 .vcard h3{margin:0;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2}
 .vrow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.shop-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;margin:0 0 40px;scrollbar-width:none}
-.shop-tabs::-webkit-scrollbar{display:none}
-.shop-tabs a{flex:none;display:flex;align-items:center;min-height:44px;padding:0 20px;border:1px solid var(--line);font-size:12px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
-.shop-tabs a:hover{border-color:var(--ink);color:var(--ink)}
-.shop-tabs a.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.shop-group{margin-bottom:56px}
-.shop-group h3{margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid var(--line);font-family:var(--serif);font-weight:500;font-size:32px}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:32px 24px}
-.pcard{display:flex;flex-direction:column;gap:10px}
-.pcard .img{aspect-ratio:1/1;background:#F2F2F2;align-items:center;justify-content:center;text-align:center;overflow:hidden}
-.pcard img{width:100%;height:100%;object-fit:contain;background:#fff}
-.pcard h4{margin:4px 0 0;font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.2}
-.pcard p{margin:0;font-size:14px;line-height:1.6;font-weight:300;color:var(--soft)}
-.pcard .btn{margin-top:6px;text-align:center;padding:12px 16px}
-.pcard .soon{margin-top:6px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:12px 0}
+.shop-select{position:relative;max-width:420px;margin:0 0 48px}
+.shop-select select{appearance:none;-webkit-appearance:none;width:100%;min-height:52px;padding:0 52px 0 20px;border:1px solid #BBBBBB;border-radius:0;background:var(--bg);color:var(--ink);font:14px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.shop-select select:focus{outline:2px solid var(--ink);outline-offset:2px}
+.shop-select::after{content:'';position:absolute;right:22px;top:50%;margin-top:-3px;border:7px solid transparent;border-top:8px solid var(--ink);border-bottom:0;pointer-events:none}
+.shop-group{margin-bottom:64px}
+.shop-group h3{margin:0 0 32px;padding-bottom:12px;border-bottom:1px solid var(--line);font-family:var(--serif);font-weight:500;font-size:32px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:56px 28px}
+.pcard{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.pcard .badge{position:absolute;top:0;left:0;z-index:1;background:#F0F0F0;padding:8px 12px;border-radius:4px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.pcard .img{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.pcard .img.empty-img{background:#F5F5F5;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pcard img{width:88%;height:88%;object-fit:contain}
+.pcard .brand{margin-top:20px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.pcard h4{margin:12px 0 0;font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.15}
+.pcard h4 a{color:inherit}
+.pcard p{margin:10px 0 0;font-size:14px;line-height:1.55;font-weight:300;color:var(--soft)}
+.pcard .price{margin-top:14px;font-size:15px}
+.pcard .buy{margin-top:auto;padding-top:20px;width:100%}
+.pcard .buy a,.pcard .buy span{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;min-height:48px;padding:0 12px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.pcard .buy a:hover{background:#333333;color:#fff}
+.pcard .buy span{background:#777777;color:#fff}
+.pcard .buy svg{flex:none}
 .amz{font-size:13px;color:var(--muted);margin:-20px 0 32px}
 .pill{font-size:13px;font-weight:500;padding:6px 12px;border:1px solid var(--ink);color:var(--ink)}
 
@@ -144,9 +151,12 @@ footer a:hover{color:#fff}
   .feature{padding-top:28px}
 }
 @media (max-width:600px){
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px}
-  .pcard h4{font-size:19px}
-  .pcard .btn{padding:12px 8px;letter-spacing:.12em;font-size:11px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 16px}
+  .pcard h4{font-size:20px}
+  .pcard .brand{font-size:11px;margin-top:14px}
+  .pcard .badge{font-size:10px;padding:6px 8px}
+  .pcard .buy a,.pcard .buy span{font-size:11px;letter-spacing:.06em;gap:8px;min-height:44px}
+  .pcard .buy svg{width:22px}
 }
 @media (max-width:600px){ .verdict-intro h2,.news h2,.split h2{font-size:36px} section.block{padding:56px 0} }
 </style>
@@ -322,7 +332,11 @@ const VERDICTS = [
    section: one of the ids in SHOP_SECTIONS below
    link:    your Amazon link (leave '' and it shows "Link coming soon")
    img:     optional image address; leave '' for a grey placeholder
-   note:    one short line on why you love it (optional)
+   brand:   brand name, shown in small capitals above the product name
+   price:   optional, e.g. '$24.99'. Amazon prices change often, so leave it ''
+            unless you keep it up to date (Amazon's rules require prices to be current)
+   badge:   optional little label on the photo, e.g. "Racquel's Pick" or 'New'
+   note:    optional one short line on why you love it
    To add or rename a sub-section, edit SHOP_SECTIONS. */
 const SHOP_SECTIONS = [
   {id:'home', name:'Home'},
@@ -333,14 +347,14 @@ const SHOP_SECTIONS = [
 ];
 
 const SHOP = [
-  {section:'home', name:'[Product name]', note:'[Why you love it]', link:'', img:''},
-  {section:'home', name:'[Product name]', note:'[Why you love it]', link:'', img:''},
-  {section:'fitness', name:'[Product name]', note:'[Why you love it]', link:'', img:''},
-  {section:'fitness', name:'[Product name]', note:'[Why you love it]', link:'', img:''},
-  {section:'beauty', name:'Revlon One-Step Brush Dryer', note:'[Why you love it]', link:'', img:''},
-  {section:'wellness', name:'Jade Stone Eye Mask', note:'[Why you love it]', link:'', img:''},
-  {section:'lifestyle', name:'[Product name]', note:'[Why you love it]', link:'', img:''},
-  {section:'lifestyle', name:'[Product name]', note:'[Why you love it]', link:'', img:''}
+  {section:'home', brand:'[Brand]', name:'[Product name]', price:'', badge:"Racquel's Pick", note:'', link:'', img:''},
+  {section:'home', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'fitness', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'fitness', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'beauty', brand:'Revlon', name:'One-Step Brush Dryer', price:'', badge:'', note:'', link:'', img:''},
+  {section:'wellness', brand:'[Brand]', name:'Jade Stone Eye Mask', price:'', badge:'Favorite', note:'', link:'', img:''},
+  {section:'lifestyle', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''},
+  {section:'lifestyle', brand:'[Brand]', name:'[Product name]', price:'', badge:'', note:'', link:'', img:''}
 ];
 
 /* ============================================================ */
@@ -406,16 +420,20 @@ function newsBlock(){
 
 const shopName = id => (SHOP_SECTIONS.find(c => c.id === id) || {}).name || '';
 function productCard(p){
-  const pic = p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">` : 'Product photo';
-  const buy = p.link
-    ? `<a class="btn" href="${esc(p.link)}" target="_blank" rel="sponsored noopener noreferrer">Shop on Amazon</a>`
-    : `<div class="soon">Link coming soon</div>`;
+  const out = p.link ? ` href="${esc(p.link)}" target="_blank" rel="sponsored noopener noreferrer"` : '';
+  const pic = p.img
+    ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
+    : 'Product photo';
   return `<article class="pcard">
-    <div class="img ph">${pic}</div>
-    <div class="eyebrow">${esc(shopName(p.section))}</div>
-    <h4>${esc(p.name)}</h4>
+    ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ''}
+    ${p.link ? `<a class="img${p.img?'':' empty-img'}"${out} tabindex="-1" aria-hidden="true">${pic}</a>` : `<div class="img${p.img?'':' empty-img'}">${pic}</div>`}
+    ${p.brand ? `<div class="brand">${esc(p.brand)}</div>` : ''}
+    <h4>${p.link ? `<a${out}>${esc(p.name)}</a>` : esc(p.name)}</h4>
     ${p.note ? `<p>${esc(p.note)}</p>` : ''}
-    ${buy}
+    ${p.price ? `<div class="price">${esc(p.price)}</div>` : ''}
+    <div class="buy">${p.link
+      ? `<a${out}>Shop on Amazon <svg width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h28M24 1l4 4-4 4"/></svg><span class="sr"> (opens Amazon in a new tab)</span></a>`
+      : `<span>Link coming soon</span>`}</div>
   </article>`;
 }
 function shopBlock(){
@@ -427,8 +445,8 @@ function shopBlock(){
   </section>`;
 }
 function renderShop(sec){
-  const tabs = [{id:'', name:'All'}].concat(SHOP_SECTIONS)
-    .map(t => `<a href="#shop${t.id?'-'+t.id:''}"${t.id===sec?' class="on" aria-current="page"':''}>${esc(t.name)}</a>`).join('');
+  const opts = [{id:'', name:'All'}].concat(SHOP_SECTIONS)
+    .map(t => `<option value="${t.id}"${t.id===sec?' selected':''}>${esc(t.name)}</option>`).join('');
   const groups = (sec ? SHOP_SECTIONS.filter(c => c.id === sec) : SHOP_SECTIONS)
     .map(c => ({c, items: SHOP.filter(p => p.section === c.id)}))
     .filter(g => sec || g.items.length);
@@ -439,9 +457,13 @@ function renderShop(sec){
   app.innerHTML = `<section class="block" aria-labelledby="shoph">
     <div class="sec-head"><h2 id="shoph" style="font-size:56px">${sec ? 'Shop ' + esc(shopName(sec)) : 'Shop'}</h2></div>
     <p class="amz">The things I actually use and love. As an Amazon Associate I earn from qualifying purchases.</p>
-    <nav class="shop-tabs" aria-label="Shop sections">${tabs}</nav>
+    <label for="shopSel" class="sr">Shop section</label>
+    <div class="shop-select"><select id="shopSel">${opts}</select></div>
     ${body}
   </section>`;
+  document.getElementById('shopSel').addEventListener('change', e => {
+    location.hash = e.target.value ? 'shop-' + e.target.value : 'shop';
+  });
 }
 
 function renderHome(){
