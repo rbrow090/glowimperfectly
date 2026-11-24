@@ -311,7 +311,7 @@ function card(p){
     <a href="#story-${p.slug}" class="img ph" style="background:${p.tone}" aria-hidden="true" tabindex="-1">${esc(p.photo)}</a>
     <div class="eyebrow">${esc(catName(p.cat))}</div>
     <h3><a href="#story-${p.slug}">${esc(p.title)}</a></h3>
-    <div class="meta">By Racquel</div>
+    <div class="meta">By Racquel Melissa</div>
   </article>`;
 }
 function verdictsBlock(){
@@ -366,7 +366,7 @@ function renderHome(){
       <div class="eyebrow">${esc(catName(f.cat))} · Featured</div>
       <h1>${esc(f.title)}</h1>
       <p class="lede">${esc(f.dek)}</p>
-      <div class="meta">By Racquel · ${esc(f.read)}</div>
+      <div class="meta">By Racquel Melissa · ${esc(f.read)}</div>
       <a class="btn" href="#story-${f.slug}">Read the story</a>
     </div>
   </section>
@@ -403,7 +403,7 @@ function renderStory(slug){
     <div class="eyebrow" style="margin-top:20px"><a href="#${p.cat}" style="color:var(--accent)">${esc(catName(p.cat))}</a></div>
     <h1>${esc(p.title)}</h1>
     <p class="lede">${esc(p.dek)}</p>
-    <div class="meta" style="margin-top:16px">By Racquel · ${esc(p.date)} · ${esc(p.read)}</div>
+    <div class="meta" style="margin-top:16px">By Racquel Melissa · ${esc(p.date)} · ${esc(p.read)}</div>
     <div class="hero ph" style="background:${p.tone}">${esc(p.photo)}</div>
     <div class="body">${body}</div>
     ${p.verdict ? `<div class="verdict-box"><div class="eyebrow">Would I do it again?</div><div class="serif">${esc(p.verdict)}</div></div>` : ''}
