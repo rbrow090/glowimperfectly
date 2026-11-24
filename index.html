@@ -862,7 +862,7 @@ function bindNews(){
 }
 
 const drawer = document.getElementById('drawer'), menuBtn = document.getElementById('menuBtn');
-document.getElementById('drawerLinks').innerHTML = CATEGORIES.map(c => (c.subs && c.subs.length)
+document.getElementById('drawerLinks').innerHTML = `<li><a class="m-item" href="#home">Home</a></li>` + CATEGORIES.map(c => (c.subs && c.subs.length)
   ? `<li><button class="m-item" aria-expanded="false" aria-controls="dd-${c.id}">${esc(c.name)}<span class="plus" aria-hidden="true"></span></button>
       <div class="dd" id="dd-${c.id}"><ul>
         <li><a class="m-all" href="#${c.id}">All ${esc(c.name)}</a></li>
@@ -908,6 +908,8 @@ setHeadH(); onScroll();
 if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 document.addEventListener('click', e => {
   if(e.target.closest('a[data-placeholder]')) e.preventDefault();
+  const same = e.target.closest('a[href^="#"]');
+  if(same && same.getAttribute('href') === (location.hash || '#home') && !same.classList.contains('by')){ closeDrawer(); window.scrollTo(0,0); }
   const by = e.target.closest('a.by');
   if(by && location.hash === '#about/meet-racquel'){ e.preventDefault(); closeDrawer(); scrollToMeet(); }
 });
