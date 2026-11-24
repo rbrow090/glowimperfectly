@@ -568,7 +568,7 @@ function renderAbout(){
   </section>`;
 }
 
-function route(){
+function route(initial){
   const h = (location.hash || '#home').slice(1);
   let active = '';
   if(h.startsWith('story-')) renderStory(h.slice(6));
@@ -579,7 +579,8 @@ function route(){
   else if(h === 'verdicts' || h === 'podcast'){
     renderHome(); active = h;
     const el = document.getElementById(h + '-sec');
-    if(el) setTimeout(() => el.scrollIntoView(), 0);
+    if(el && !initial) setTimeout(() => el.scrollIntoView(), 0);
+    else window.scrollTo(0,0);
     document.getElementById('mainNav').innerHTML = navLinks(active);
     closeDrawer(); bindNews(); return;
   }
@@ -638,8 +639,9 @@ function setHeadH(){ document.documentElement.style.setProperty('--head-h', site
 window.addEventListener('scroll', onScroll, {passive:true});
 if('ResizeObserver' in window) new ResizeObserver(setHeadH).observe(siteHead); else window.addEventListener('resize', setHeadH);
 setHeadH(); onScroll();
-window.addEventListener('hashchange', route);
-route();
+if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('hashchange', () => route());
+route(true);
 </script>
 </body>
 </html>
