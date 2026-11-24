@@ -63,29 +63,32 @@ nav.main a.on{border-bottom-color:var(--ink)}
 .drawer.open{display:block}
 body.menu-open{overflow:hidden}
 .drawer-head{padding-top:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
-.drawer-body{max-width:640px;margin:0 auto;padding:36px 24px 56px}
-.drawer-title{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:32px}
-.drawer-title h2{margin:0;font-family:var(--serif);font-weight:500;font-size:56px;line-height:1}
-.close-text{background:none;border:none;color:var(--ink);min-height:44px;padding:0;font-size:14px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.close-text:hover{color:var(--muted)}
-.drawer-feature{display:flex;align-items:center;justify-content:center;min-height:52px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+.drawer-body{max-width:640px;margin:0 auto;padding:20px 24px 48px}
+.drawer-feature{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
 .drawer-feature:hover{background:#333333;color:#fff}
-.drawer-list{list-style:none;margin:32px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.drawer-list li+li{border-top:0}
-.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:64px;padding:0;background:none;border:none;color:var(--ink);font:14px var(--sans);letter-spacing:.1em;text-transform:uppercase;text-align:left;cursor:pointer}
-.acc-btn .plus{position:relative;flex:none;width:20px;height:20px;margin-right:6px}
-.acc-btn .plus::before,.acc-btn .plus::after{content:'';position:absolute;left:0;top:50%;width:20px;height:1.5px;margin-top:-.75px;background:currentColor;transition:transform .2s,width .2s,left .2s}
-.acc-btn .plus::after{transform:rotate(90deg)}
-.acc-btn[aria-expanded="true"] .plus::before{transform:rotate(45deg);width:17px;left:1.5px}
-.acc-btn[aria-expanded="true"] .plus::after{transform:rotate(-45deg);width:17px;left:1.5px}
-.acc-panel{list-style:none;margin:0;padding:0 0 12px 30px}
-.acc-panel[hidden]{display:none}
-.acc-panel a{display:flex;align-items:center;min-height:52px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.acc-panel a:hover{color:var(--muted)}
-.drawer-more{list-style:none;margin:0;padding:16px 0 0}
-.drawer-more a{display:flex;align-items:center;min-height:56px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
-.drawer-social{display:flex;gap:36px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+/* two panels side by side; .sub-open slides to the second */
+.panes-clip{overflow:hidden;margin-top:12px}
+.panes{display:flex;width:200%;transform:translateX(0);transition:transform .25s ease}
+.drawer.sub-open .panes{transform:translateX(-50%)}
+.pane{width:50%;flex:none}
+.pane[hidden]{display:block;visibility:hidden}
+@media (prefers-reduced-motion: reduce){ .panes{transition:none} }
+.m-list{list-style:none;margin:0;padding:6px 0;border-bottom:1px solid var(--line)}
+.m-list li{margin:0}
+.m-item{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:44px;padding:0;background:none;border:none;color:var(--ink);font:400 16px/1.2 var(--sans);letter-spacing:0;text-transform:none;text-align:left;cursor:pointer}
+.m-item:hover{color:var(--muted)}
+.m-item .chev{flex:none;width:8px;height:8px;margin-right:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+.m-more{border-bottom:none;padding-top:10px}
+.m-more .m-item{font-size:15px;color:var(--soft)}
+.sub-head{display:flex;align-items:center;gap:6px;margin:4px 0 6px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.sub-back{display:flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;margin-left:-12px;background:none;border:none;color:var(--ink);cursor:pointer}
+.sub-back:hover{color:var(--muted)}
+.sub-title{margin:0;font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.1}
+.sub-list{border-bottom:none}
+.view-all{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.drawer-social{display:flex;gap:28px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 .drawer-social a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:-10px}
+.drawer-social svg{width:19px;height:19px}
 .subnav{display:flex;flex-wrap:wrap;gap:4px 28px;margin:-12px 0 40px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
 .subnav a{padding:12px 0;border-bottom:1px solid transparent;color:var(--soft)}
 .subnav a.on{color:var(--ink);border-bottom-color:var(--ink)}
@@ -254,24 +257,34 @@ footer a:hover{color:#fff}
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
       </button>
       <div class="brand"><a href="#home" class="logo">Glow <i>Imperfectly</i></a><a href="#about/meet-racquel" class="by">By Racquel Melissa</a></div>
-      <button class="icon-btn" id="drawerSearch" aria-label="Search">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      </button>
+      <span class="icon-btn" aria-hidden="true"></span>
     </div>
   </div>
   <div class="drawer-body">
-    <div class="drawer-title">
-      <h2>Menu</h2>
-      <button class="close-text" id="closeText">Close menu</button>
-    </div>
     <a class="drawer-feature" href="#guides-resources/shop-my-favorites">Shop My Favorites</a>
-    <ul class="drawer-list" id="drawerLinks"></ul>
-    <ul class="drawer-more">
-      <li><a href="#podcast">The Podcast</a></li>
-      <li><a href="#verdicts">Would I Do It Again?</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#newsletter">Newsletter</a></li>
-    </ul>
+    <div class="panes-clip">
+      <div class="panes">
+        <div class="pane" id="paneMain">
+          <ul class="m-list" id="drawerLinks"></ul>
+          <ul class="m-list m-more">
+            <li><a class="m-item" href="#podcast">The Podcast</a></li>
+            <li><a class="m-item" href="#verdicts">Would I Do It Again?</a></li>
+            <li><a class="m-item" href="#about">About</a></li>
+            <li><a class="m-item" href="#newsletter">Newsletter</a></li>
+          </ul>
+        </div>
+        <div class="pane" id="paneSub" hidden>
+          <div class="sub-head">
+            <button class="sub-back" id="subBack" aria-label="Back to main menu">
+              <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M21 7H2M7 1L1 7l6 6"/></svg>
+            </button>
+            <h2 class="sub-title" id="subTitle" tabindex="-1"></h2>
+          </div>
+          <ul class="m-list sub-list" id="subLinks"></ul>
+          <a class="view-all" id="subAll" href="#">View all</a>
+        </div>
+      </div>
+    </div>
     <div class="drawer-social">
       <a href="https://www.instagram.com/racquelmelissa" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
       <a href="https://www.tiktok.com/@racquelmelissa" aria-label="TikTok"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 2.2 1.8 3.7 4 3.9v3.1c-1.5.1-2.9-.4-4-1.2v6.1c0 3.4-2.6 6.1-6 6.1s-6-2.6-6-6 2.8-6.1 6.3-5.9v3.2c-1.6-.3-3.1.9-3.1 2.6 0 1.5 1.2 2.8 2.8 2.8 1.6 0 2.8-1.2 2.8-3V3h3.2z"/></svg></a>
@@ -841,26 +854,38 @@ function bindNews(){
 }
 
 const drawer = document.getElementById('drawer'), menuBtn = document.getElementById('menuBtn');
-document.getElementById('drawerLinks').innerHTML =
-  CATEGORIES.map(c => `<li>
-    <button class="acc-btn" aria-expanded="false" aria-controls="acc-${c.id}">${esc(c.name)}<span class="plus" aria-hidden="true"></span></button>
-    <ul class="acc-panel" id="acc-${c.id}" hidden>
-      ${(c.subs || []).map(x => `<li><a href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('')}
-    </ul>
-  </li>`).join('');
+const paneMain = document.getElementById('paneMain'), paneSub = document.getElementById('paneSub');
+let subFrom = null;
+document.getElementById('drawerLinks').innerHTML = CATEGORIES.map(c => (c.subs && c.subs.length)
+  ? `<li><button class="m-item" data-sub="${c.id}" aria-controls="paneSub">${esc(c.name)}<span class="chev" aria-hidden="true"></span></button></li>`
+  : `<li><a class="m-item" href="#${c.id}">${esc(c.name)}</a></li>`).join('');
+function openSub(id, btn){
+  const c = CATEGORIES.find(x => x.id === id); if(!c) return;
+  subFrom = btn;
+  document.getElementById('subTitle').textContent = c.name;
+  document.getElementById('subLinks').innerHTML = c.subs.map(x => `<li><a class="m-item" href="#${c.id}/${x.id}">${esc(x.name)}</a></li>`).join('');
+  const all = document.getElementById('subAll'); all.href = '#' + c.id; all.setAttribute('aria-label', 'View all ' + c.name);
+  paneSub.hidden = false; paneMain.setAttribute('aria-hidden', 'true'); paneMain.inert = true; paneSub.inert = false;
+  drawer.classList.add('sub-open'); drawer.scrollTop = 0;
+  document.getElementById('subTitle').focus({preventScroll:true});
+}
+function closeSub(focusBack){
+  drawer.classList.remove('sub-open');
+  paneMain.removeAttribute('aria-hidden'); paneMain.inert = false; paneSub.inert = true;
+  const done = () => { if(!drawer.classList.contains('sub-open')) paneSub.hidden = true; };
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) done(); else setTimeout(done, 260);
+  if(focusBack && subFrom) subFrom.focus({preventScroll:true});
+}
 document.getElementById('drawerLinks').addEventListener('click', e => {
-  const b = e.target.closest('.acc-btn'); if(!b) return;
-  const open = b.getAttribute('aria-expanded') !== 'true';
-  b.setAttribute('aria-expanded', String(open));
-  document.getElementById(b.getAttribute('aria-controls')).hidden = !open;
+  const b = e.target.closest('[data-sub]'); if(b) openSub(b.dataset.sub, b);
 });
-function closeDrawer(){ drawer.classList.remove('open'); document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); }
+document.getElementById('subBack').addEventListener('click', () => closeSub(true));
+paneSub.inert = true;
+function closeDrawer(){ if(drawer.classList.contains('sub-open')) closeSub(false); drawer.classList.remove('open'); document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); }
 menuBtn.addEventListener('click', () => { drawer.classList.add('open'); document.body.classList.add('menu-open'); menuBtn.setAttribute('aria-expanded','true'); });
 document.getElementById('closeBtn').addEventListener('click', () => { closeDrawer(); menuBtn.focus(); });
-document.getElementById('closeText').addEventListener('click', () => { closeDrawer(); menuBtn.focus(); });
 drawer.addEventListener('click', e => { if(e.target.closest('a')) closeDrawer(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && drawer.classList.contains('open')){ closeDrawer(); menuBtn.focus(); } });
-document.getElementById('drawerSearch').addEventListener('click', () => { closeDrawer(); if(!searchForm.classList.contains('open')) searchBtn.click(); else document.getElementById('q').focus(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && drawer.classList.contains('open')){ if(drawer.classList.contains('sub-open')) closeSub(true); else { closeDrawer(); menuBtn.focus(); } } });
 
 const searchBtn = document.getElementById('searchBtn'), searchForm = document.getElementById('searchForm');
 searchBtn.addEventListener('click', () => {
