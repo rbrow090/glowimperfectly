@@ -9,14 +9,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
 <style>
 :root{
-  --bg:#FFFFFF; --card:#FFFDF9; --ink:#2B2520; --soft:#4A3F36; --muted:#6B5F55;
-  --line:#DDD3C5; --accent:#8E4A2E; --serif:'Cormorant Garamond',Georgia,serif; --sans:'Jost',system-ui,sans-serif;
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#000000; --soft:#333333; --muted:#666666;
+  --line:#DDDDDD; --accent:#000000; --serif:'Cormorant Garamond',Georgia,serif; --sans:'Jost',system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
 a{color:var(--ink);text-decoration:none}
-a:hover{color:var(--accent)}
+a:hover{color:var(--muted)}
 img{max-width:100%;display:block}
 button{font-family:inherit}
 .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
@@ -26,7 +26,7 @@ button{font-family:inherit}
 .btn{display:inline-block;border:1px solid var(--ink);padding:14px 28px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;background:none;color:var(--ink);cursor:pointer}
 .btn:hover{background:var(--ink);color:var(--bg)}
 .btn.dark{background:var(--ink);color:var(--bg)}
-.btn.dark:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.dark:hover{background:#333333;border-color:#333333;color:#fff}
 .ph{display:flex;align-items:flex-end;padding:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
@@ -34,7 +34,7 @@ button{font-family:inherit}
 .topbar{background:var(--ink);color:var(--bg);text-align:center;padding:10px 16px;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .topbar a{color:var(--bg)}
 header.site-head{position:sticky;top:0;z-index:15;background:var(--bg);padding-top:28px;transition:box-shadow .2s}
-header.site-head.scrolled{box-shadow:0 6px 18px rgba(43,37,32,.08)}
+header.site-head.scrolled{box-shadow:0 6px 18px rgba(0,0,0,.08)}
 section[id]{scroll-margin-top:var(--head-h,120px)}
 .head-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .icon-btn{background:none;border:none;min-width:44px;min-height:44px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center}
@@ -45,7 +45,7 @@ nav.main a{padding:12px 0;border-bottom:1px solid transparent}
 nav.main a.on{border-bottom-color:var(--ink)}
 .search{display:none;padding:16px 0 4px}
 .search.open{display:flex;gap:10px}
-.search input{flex:1;min-height:48px;padding:0 16px;border:1px solid #B9AC9C;background:var(--card);font:15px var(--sans);color:var(--ink)}
+.search input{flex:1;min-height:48px;padding:0 16px;border:1px solid #BBBBBB;background:var(--card);font:15px var(--sans);color:var(--ink)}
 
 /* drawer */
 .drawer{position:fixed;inset:0;background:var(--bg);display:none;z-index:20;overflow:auto}
@@ -58,7 +58,7 @@ body.menu-open{overflow:hidden}
 .close-text{background:none;border:1px solid var(--ink);color:var(--ink);min-height:44px;padding:0 16px;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
 .close-text:hover{background:var(--ink);color:var(--bg)}
 .drawer-feature{display:flex;align-items:center;justify-content:center;min-height:52px;background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
-.drawer-feature:hover{background:var(--accent);color:#fff}
+.drawer-feature:hover{background:#333333;color:#fff}
 .drawer-list{list-style:none;margin:32px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .drawer-list a{display:flex;justify-content:space-between;align-items:center;min-height:60px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
 .drawer-list a::after{content:'';width:9px;height:9px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);margin-right:6px}
@@ -86,8 +86,8 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .verdict-intro{text-align:center;max-width:640px;margin:0 auto 44px;display:flex;flex-direction:column;gap:14px}
 .verdict-intro h2{margin:0;font-family:var(--serif);font-weight:500;font-style:italic;font-size:48px;line-height:1.1}
 .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
-.vcard{background:var(--card);border:1px solid #E6DDD0;padding:20px;display:flex;flex-direction:column;gap:14px}
-.vcard .img{height:220px;background:#EFE6DA;align-items:center;justify-content:center}
+.vcard{background:var(--card);border:1px solid #E5E5E5;padding:20px;display:flex;flex-direction:column;gap:14px}
+.vcard .img{height:220px;background:#F2F2F2;align-items:center;justify-content:center}
 .vcard h3{margin:0;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2}
 .vrow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .pill{font-size:13px;font-weight:500;padding:6px 12px;border:1px solid var(--ink);color:var(--ink)}
@@ -101,8 +101,8 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .news-in{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 .news h2{margin:0;font-family:var(--serif);font-weight:500;font-size:44px;line-height:1.1}
 .news form{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.news input{flex:1 1 260px;min-width:0;min-height:48px;padding:0 16px;border:1px solid #B9AC9C;background:var(--card);font:15px var(--sans);color:var(--ink)}
-.news button{min-height:48px;padding:0 28px;background:var(--accent);color:#fff;border:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.news input{flex:1 1 260px;min-width:0;min-height:48px;padding:0 16px;border:1px solid #BBBBBB;background:var(--card);font:15px var(--sans);color:var(--ink)}
+.news button{min-height:48px;padding:0 28px;background:var(--ink);color:#fff;border:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
 .note{font-size:14px;color:var(--soft);min-height:20px}
 
 /* article */
@@ -110,21 +110,21 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .article h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6vw,64px);line-height:1.04;margin:16px 0 18px}
 .article .hero{height:min(520px,70vw);margin:36px 0}
 .article .body p{font-size:18px;line-height:1.8;font-weight:300;color:var(--ink);margin:0 0 22px}
-.article .body p.prompt{background:var(--card);border:1px dashed #B9AC9C;padding:16px 18px;color:var(--soft);font-style:italic}
+.article .body p.prompt{background:var(--card);border:1px dashed #BBBBBB;padding:16px 18px;color:var(--soft);font-style:italic}
 .article .body h2{font-family:var(--serif);font-weight:500;font-size:34px;margin:40px 0 14px}
-.verdict-box{margin-top:40px;padding:28px;background:var(--card);border:1px solid #E6DDD0;text-align:center}
+.verdict-box{margin-top:40px;padding:28px;background:var(--card);border:1px solid #E5E5E5;text-align:center}
 .verdict-box .serif{font-size:34px;font-style:italic;margin:6px 0}
 .back{display:inline-block;margin-top:8px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:10px 0}
 
-footer{background:var(--ink);color:#E9E1D5;padding:56px 0 40px;margin-top:0}
+footer{background:var(--ink);color:#E5E5E5;padding:56px 0 40px;margin-top:0}
 .foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px}
-footer a{color:#E9E1D5;padding:12px 0}
+footer a{color:#E5E5E5;padding:12px 0}
 footer a:hover{color:#fff}
 .foot-nav{display:flex;flex-wrap:wrap;gap:4px 28px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;align-items:center}
-.disclose{margin-top:32px;padding-top:24px;border-top:1px solid #4A3F36;font-size:12px;color:#BDB2A3;line-height:1.6}
+.disclose{margin-top:32px;padding-top:24px;border-top:1px solid #333333;font-size:12px;color:#BBBBBB;line-height:1.6}
 @media (max-width:760px){
   nav.main{display:none}
-  header.site-head{padding-top:20px;padding-bottom:12px}
+  header.site-head{padding-top:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
   .feature{padding-top:28px}
 }
 @media (max-width:600px){ .verdict-intro h2,.news h2,.split h2{font-size:36px} section.block{padding:56px 0} }
@@ -189,8 +189,8 @@ footer a:hover{color:#fff}
   <div class="wrap">
     <div class="foot-row">
       <div style="flex:1 1 280px">
-        <div style="font-family:var(--serif);font-size:34px;color:#F7F2EA">Glow <i>Imperfectly</i></div>
-        <div style="font-size:14px;font-weight:300;color:#CFC5B7;margin-top:8px">by Racquel Melissa</div>
+        <div style="font-family:var(--serif);font-size:34px;color:#FFFFFF">Glow <i>Imperfectly</i></div>
+        <div style="font-size:14px;font-weight:300;color:#CCCCCC;margin-top:8px">by Racquel Melissa</div>
       </div>
       <nav class="foot-nav" aria-label="Social and pages">
         <a href="https://www.instagram.com/racquelmelissa">Instagram</a>
@@ -220,7 +220,7 @@ const CATEGORIES = [
 
 const POSTS = [
   {
-    slug:'lifting-confidence', cat:'fitness', featured:true, tone:'#D9C7B0',
+    slug:'lifting-confidence', cat:'fitness', featured:true, tone:'#E0E0E0',
     title:'How Lifting Weights Rebuilt My Confidence',
     dek:"I didn't start strength training to change my body. I started because I'd stopped recognizing myself.",
     photo:'Photo: you, mid-lift in the gym', date:'[Publish date]', read:'6 min read',
@@ -235,7 +235,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'relaxed-hair-wash-day', cat:'beauty', tone:'#E4D5C3',
+    slug:'relaxed-hair-wash-day', cat:'beauty', tone:'#EAEAEA',
     title:'My Relaxed Hair Wash Day, Step by Step',
     dek:'The routine, the products and the tools that keep my hair healthy between appointments.',
     photo:'Photo: wash day flat lay', date:'[Publish date]', read:'5 min read',
@@ -246,7 +246,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'jade-eye-mask', cat:'wellness', tone:'#DCE0D3',
+    slug:'jade-eye-mask', cat:'wellness', tone:'#E8E8E8',
     title:"The Jade Eye Mask I Didn't Expect to Love",
     dek:'I bought it on a whim. Here is my honest take after living with it.',
     photo:'Photo: eye mask close-up', date:'[Publish date]', read:'3 min read',
@@ -258,7 +258,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'amalfi-calm-rental', cat:'home-style', tone:'#E8DCCB',
+    slug:'amalfi-calm-rental', cat:'home-style', tone:'#EDEDED',
     title:'Bringing Amalfi Calm Into a Rental',
     dek:'Warm, coastal and renter-friendly: how I make every new house feel like home.',
     photo:'Photo: your living room', date:'[Publish date]', read:'5 min read',
@@ -269,7 +269,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'weeknight-routine', cat:'mom-wife', tone:'#E1D2C0',
+    slug:'weeknight-routine', cat:'mom-wife', tone:'#E5E5E5',
     title:'The Weeknight Routine That Keeps Our House Running',
     dek:'Dinner, bath time and bedtime, with a full-time job and a little room left for me.',
     photo:'Photo: family moment', date:'[Publish date]', read:'4 min read',
@@ -278,7 +278,7 @@ const POSTS = [
     ]
   },
   {
-    slug:'podcast-studio', cat:'creating', tone:'#D9CBB8',
+    slug:'podcast-studio', cat:'creating', tone:'#E3E3E3',
     title:'Inside My Spare-Room Podcast Studio',
     dek:'The cameras, the mic and the lighting I use to film from home.',
     photo:'Photo: studio wide shot', date:'[Publish date]', read:'4 min read',
@@ -331,7 +331,7 @@ function verdictsBlock(){
 function podcastBlock(){
   return `<section class="block" id="podcast-sec" aria-labelledby="ph">
     <div class="split">
-      <div class="img ph" style="background:#C9A989;color:#3A2F27">Photo: you at the mic in your studio</div>
+      <div class="img ph" style="background:#CFCFCF;color:#222222">Photo: you at the mic in your studio</div>
       <div class="txt">
         <div class="eyebrow">The Podcast</div>
         <h2 id="ph">Get Ready &amp; Chat</h2>
@@ -417,7 +417,7 @@ function renderAbout(){
   app.innerHTML = `<section class="article" aria-labelledby="ah">
     <div class="eyebrow">About</div>
     <h1 id="ah">Hi, I'm Racquel</h1>
-    <div class="hero ph" style="background:#D9C7B0">Photo: your portrait</div>
+    <div class="hero ph" style="background:#E0E0E0">Photo: your portrait</div>
     <div class="body">
       <p>Glow Imperfectly is where I share beauty, wellness, home and real life as a mom and wife, from my point of view, as I go.</p>
       <p class="prompt">[A few sentences in your own words: who you are, what you love, and why you started this.]</p>
