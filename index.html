@@ -322,7 +322,7 @@ footer a:hover{color:#fff}
 const CATEGORIES = [
   {id:'beauty', name:'Beauty', subs:[{id:'hair', name:'Hair'}, {id:'skincare', name:'Skincare'}, {id:'makeup', name:'Makeup'}, {id:'nails', name:'Nails'}, {id:'fragrance', name:'Fragrance'}]},
   {id:'health-wellness', name:'Health + Wellness', subs:[{id:'body', name:'Body'}, {id:'fitness', name:'Fitness'}, {id:'health', name:'Health'}, {id:'mind', name:'Mind'}, {id:'nutrition', name:'Nutrition'}, {id:'self-care', name:'Self-Care'}]},
-  {id:'lifestyle', name:'Lifestyle', subs:[{id:'mom-and-wife', name:'Mom & Wife'}, {id:'motherhood', name:'Motherhood'}, {id:'travel', name:'Travel'}, {id:'content-creation', name:'Content Creation'}, {id:'food-recipes', name:'Food + Recipes'}]},
+  {id:'lifestyle', name:'Lifestyle', subs:[{id:'love-family', name:'Love + Family'}, {id:'motherhood', name:'Motherhood'}, {id:'travel', name:'Travel'}, {id:'content-creation', name:'Content Creation'}, {id:'food-recipes', name:'Food + Recipes'}]},
   {id:'home-living', name:'Home', subs:[{id:'decor', name:'Decor'}, {id:'organization', name:'Organization'}]},
   {id:'guides-resources', name:'Guides + Resources', subs:[{id:'guides', name:'Guides'}, {id:'shop-my-favorites', name:'Shop My Favorites'}, {id:'free-downloads', name:'Free Downloads'}]}
 ];
@@ -466,8 +466,8 @@ const SHOP = [
   {section:'health-wellness', sub:'self-care', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
   {section:'health-wellness', sub:'self-care', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
   /* lifestyle */
-  {section:'lifestyle', sub:'mom-and-wife', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
-  {section:'lifestyle', sub:'mom-and-wife', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'love-family', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
+  {section:'lifestyle', sub:'love-family', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
   {section:'lifestyle', sub:'motherhood', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
   {section:'lifestyle', sub:'motherhood', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
   {section:'lifestyle', sub:'travel', store:'', brand:'', name:'[Product name]', note:'[Why you love it]', link:'#', img:'', price:'', badge:''},
@@ -810,7 +810,7 @@ function scrollToMeet(){
   if(el) requestAnimationFrame(() => el.scrollIntoView({block:'start'}));
 }
 /* Old addresses that moved: the browser is sent to the new one without breaking the back button. */
-const REDIRECTS = {'lifestyle/food': 'lifestyle/food-recipes'};
+const REDIRECTS = {'lifestyle/food': 'lifestyle/food-recipes', 'lifestyle/mom-and-wife': 'lifestyle/love-family'};
 function route(initial){
   let h = (location.hash || '#home').slice(1);
   if(REDIRECTS[h]){ h = REDIRECTS[h]; history.replaceState(null, '', '#' + h); }
