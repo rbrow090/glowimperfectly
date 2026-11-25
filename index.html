@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Glow Imperfectly</title>
 <meta name="description" content="Beauty, wellness, home and real life from Racquel Melissa, a working mom and wife.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,14 +17,21 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* safety net: the page can never be dragged sideways. clip (not hidden) keeps the sticky header working;
    hidden is the fallback for older browsers */
 html,body{max-width:100%;overflow-x:hidden;overflow-x:clip;overscroll-behavior-x:none;background:var(--bg)}
-h1,h2,h3,h4,p,li,a,.topbar{overflow-wrap:break-word}
+h1,h2,h3,h4,p,li,a{overflow-wrap:break-word}
+.topbar,.eyebrow,.meta,.about-find a,.post-tags,.article .body{overflow-wrap:anywhere}
+/* 3. iPhone zooms into any text box under 16px; keep every form field at 16px or more */
+input,select,textarea{font-size:max(16px,1em)}
+/* final safety net: everything except the sticky header and the menu sits inside .page-clip */
+.page-clip{max-width:100%;overflow-x:hidden;overflow-x:clip;position:relative}
+.topbar{overflow-x:hidden;overflow-x:clip}
+header.site-head{max-width:100%;overflow-x:clip}
 img,svg,video{max-width:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
 a{color:var(--ink);text-decoration:none}
 a:hover{color:var(--muted)}
 img{max-width:100%;display:block}
 button{font-family:inherit}
-.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left))}
 .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
 .meta{font-size:13px;color:var(--muted)}
 .serif{font-family:var(--serif);font-weight:500}
@@ -66,7 +73,7 @@ nav.main a.on{border-bottom-color:var(--ink)}
 .search input{flex:1;min-width:0;min-height:48px;padding:0 16px;border:1px solid #BBBBBB;background:var(--card);font:16px var(--sans);color:var(--ink)}
 
 /* drawer */
-.drawer{position:fixed;inset:0;background:var(--bg);display:none;z-index:20;overflow:auto}
+.drawer{position:fixed;inset:0;background:var(--bg);display:none;z-index:20;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
 .drawer.open{display:block}
 body.menu-open{overflow:hidden}
 .drawer-head{padding-top:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -96,9 +103,9 @@ body.menu-open{overflow:hidden}
 .dd a.m-all{font-weight:500}
 @media (prefers-reduced-motion: reduce){ .dd,.m-item .plus::before,.m-item .plus::after{transition:none} }
 .drawer-social{display:flex;gap:28px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
-.drawer-social a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:-10px}
+.drawer-social a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
 .drawer-social svg{width:19px;height:19px}
-.subnav{display:flex;flex-wrap:wrap;gap:4px 28px;margin:-12px 0 40px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.subnav{display:flex;flex-wrap:wrap;max-width:100%;min-width:0;overflow-wrap:anywhere;gap:4px 28px;margin:-12px 0 40px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
 .subnav a{padding:12px 0;border-bottom:1px solid transparent;color:var(--soft)}
 .subnav a.on{color:var(--ink);border-bottom-color:var(--ink)}
 
@@ -125,11 +132,11 @@ section.block{padding:72px 0;border-bottom:1px solid var(--line)}
 .vcard .img{height:220px;background:#F2F2F2;align-items:center;justify-content:center}
 .vcard h3{margin:0;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2}
 .vrow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.shop-jump{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 56px}
+.shop-jump{display:flex;flex-wrap:wrap;max-width:100%;align-items:center;gap:10px;margin:0 0 56px}
 .shop-jump-label{width:100%;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .shop-jump button,.shop-subnav button{min-height:44px;padding:0 18px;border:1px solid var(--ink);background:var(--bg);color:var(--ink);font:12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .shop-jump button:hover{background:var(--ink);color:var(--bg)}
-.shop-subnav{display:flex;flex-wrap:wrap;gap:4px 24px;margin:-16px 0 36px}
+.shop-subnav{display:flex;flex-wrap:wrap;max-width:100%;overflow-wrap:anywhere;gap:4px 24px;margin:-16px 0 36px}
 .shop-subnav button{min-height:40px;padding:0;border:none;border-bottom:1px solid transparent;color:var(--soft);font-size:12px}
 .shop-subnav button:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .shop-group,.shop-sub,#shoph{scroll-margin-top:calc(var(--head-h,120px) + 16px)}
@@ -296,6 +303,7 @@ footer a:hover{color:#fff}
   </div>
 </div>
 
+<div class="page-clip">
 <main class="wrap" id="app"></main>
 
 <footer>
@@ -316,6 +324,7 @@ footer a:hover{color:#fff}
     <div class="disclose">Some links on this site are affiliate links, which means I may earn a small commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases.</div>
   </div>
 </footer>
+</div>
 
 <script>
 /* ============================================================
