@@ -934,35 +934,5 @@ document.addEventListener('click', e => {
 window.addEventListener('hashchange', () => route());
 route(true);
 </script>
-<script>
-/* TEMPORARY overflow debug: only runs when the address ends with ?debug=1. Remove after the iPhone check. */
-(function(){
-  if(!/[?&]debug=1/.test(location.search)) return;
-  var box=document.createElement('div'); box.id='overflowDebug';
-  box.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;max-height:45vh;overflow:auto;background:rgba(0,0,0,.85);color:#fff;font:11px/1.4 -apple-system,monospace;padding:8px 10px;border-radius:6px;white-space:pre-wrap;word-break:break-all;pointer-events:auto';
-  document.body.appendChild(box);
-  var marked=[];
-  function name(el){return (el.id?'#'+el.id:el.tagName.toLowerCase())+(typeof el.className==='string'&&el.className.trim()?'.'+el.className.trim().split(/\s+/).slice(0,2).join('.'):'');}
-  function run(){
-    marked.forEach(function(el){el.style.outline='';});marked=[];
-    var W=document.documentElement.clientWidth, vv=window.visualViewport, out=[];
-    document.querySelectorAll('body *').forEach(function(el){
-      if(el===box||box.contains(el))return;
-      var cs=getComputedStyle(el); if(cs.display==='none'||cs.visibility==='hidden')return;
-      var r=el.getBoundingClientRect(); if(!r.width&&!r.height)return;
-      if(r.right>W+0.01||r.left<-0.01){out.push(name(el)+'  '+r.left.toFixed(1)+'→'+r.right.toFixed(1)); el.style.outline='2px solid red'; marked.push(el);}
-    });
-    var pc=document.querySelector('.page-clip');
-    box.textContent='DEBUG  screen '+screen.width+'  innerWidth '+innerWidth+'  clientWidth '+W+
-      '\nhtml scrollWidth '+document.documentElement.scrollWidth+'  body '+document.body.scrollWidth+(pc?'  page-clip '+pc.scrollWidth:'')+
-      '\nscrollX '+scrollX.toFixed(1)+(vv?'  zoom '+vv.scale.toFixed(3)+'  vv.offsetLeft '+vv.offsetLeft.toFixed(1)+'  vv.width '+vv.width.toFixed(1):'')+
-      '\n'+(out.length?'PAST THE EDGE ('+out.length+'):\n'+out.slice(0,25).join('\n'):'Nothing past the edge.');
-  }
-  var t; function soon(){clearTimeout(t);t=setTimeout(run,150);}
-  ['scroll','resize','touchend','hashchange','click'].forEach(function(ev){window.addEventListener(ev,soon,{passive:true});});
-  if(window.visualViewport){visualViewport.addEventListener('resize',soon);visualViewport.addEventListener('scroll',soon);}
-  setTimeout(run,600);
-})();
-</script>
 </body>
 </html>
