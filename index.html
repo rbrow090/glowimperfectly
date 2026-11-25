@@ -111,6 +111,36 @@ body.menu-open{overflow:hidden}
 
 /* sections *//* sections */
 section.block{padding:72px 0;border-bottom:1px solid var(--line)}
+/* featured slideshow */
+.slideshow{position:relative;padding:32px 0 8px;border-bottom:1px solid var(--line)}
+.slides{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+.slide-img{display:block;height:560px;background:#E5E5E5;overflow:hidden}
+.slide-img img{display:block;width:100%;height:100%;object-fit:cover}
+.slide-img.ph{display:flex;height:560px}
+.slide-cap{position:relative;max-width:640px;width:calc(100% - 64px);margin:-72px auto 0;padding:22px 24px 6px;background:var(--bg);text-align:center}
+.slide-cap .eyebrow{display:block;margin-bottom:12px}
+.slide-cap h2{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(32px,4vw,46px);line-height:1.08}
+.slide-cap h2 a{color:var(--ink)}
+.slide-cap h2 a:hover{color:var(--muted)}
+.dots{display:flex;justify-content:center;align-items:center;gap:0;margin-top:18px}
+.dots button{display:flex;align-items:center;justify-content:center;width:28px;height:44px;padding:0;background:none;border:none;cursor:pointer}
+.dots button::before{content:'';width:9px;height:9px;border-radius:50%;background:#CCCCCC;transition:background .2s}
+.dots button[aria-current="true"]::before{background:var(--ink)}
+.slide-arrow{position:absolute;top:calc(32px + 280px);transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,255,255,.85);color:var(--ink);cursor:pointer}
+.slide-arrow:hover{background:#fff}
+.slide-arrow.prev{left:16px}.slide-arrow.next{right:16px}
+.slide-arrow[disabled]{opacity:0;pointer-events:none}
+@media (max-width:760px){
+  /* photo runs edge to edge on phones: cancel the page's side padding exactly */
+  .slideshow{padding-top:0;margin:0 calc(-1 * max(24px, env(safe-area-inset-right))) 0 calc(-1 * max(24px, env(safe-area-inset-left)))}
+  .slide-img,.slide-img.ph{height:auto;aspect-ratio:5/4}
+  .slide-cap{width:calc(100% - 48px);margin-top:-56px;padding:18px 18px 4px}
+  .slide-cap h2{font-size:30px}
+  .slide-arrow{display:none}
+}
+@media (prefers-reduced-motion: reduce){ .slides{scroll-behavior:auto} }
 .feature{display:flex;flex-wrap:wrap;gap:48px;align-items:center;padding:56px 0 72px;border-bottom:1px solid var(--line)}
 .feature .img{flex:999 1 560px;min-width:0;height:min(560px,70vw)}
 .feature .txt{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
@@ -700,19 +730,38 @@ function renderGuidesHome(){
   </section>${newsBlock()}`;
 }
 
+/* Featured slideshow: stories with featured:true come first (in list order), then stories with a photo,
+   then the rest, up to SLIDESHOW_MAX slides. Add featured:true to a story to put it in the slideshow. */
+const SLIDESHOW_MAX = 5;
+function slideshowPosts(){
+  const feat = POSTS.filter(p => p.featured), photo = POSTS.filter(p => !p.featured && p.img), other = POSTS.filter(p => !p.featured && !p.img);
+  return feat.concat(photo, other).slice(0, SLIDESHOW_MAX);
+}
+function initSlideshow(){
+  const track = document.getElementById('slides'); if(!track) return;
+  const dots = [...document.querySelectorAll('#dots button')], prev = app.querySelector('.slide-arrow.prev'), next = app.querySelector('.slide-arrow.next');
+  const count = track.children.length;
+  const current = () => Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+  const go = i => { i = Math.max(0, Math.min(count - 1, i)); track.scrollTo({left: i * track.clientWidth, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); };
+  const update = () => { const i = current(); dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i))); if(prev){ prev.disabled = i === 0; next.disabled = i === count - 1; } };
+  let t; track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(update, 60); }, {passive:true});
+  dots.forEach((d, n) => d.addEventListener('click', () => go(n)));
+  if(prev){ prev.addEventListener('click', () => go(current() - 1)); next.addEventListener('click', () => go(current() + 1)); }
+  update();
+}
 function renderHome(){
-  const f = POSTS.find(p => p.featured) || POSTS[0];
+  const slides = slideshowPosts();
+  const f = slides[0];
   const rest = POSTS.filter(p => p !== f);
   app.innerHTML = `
-  <section class="feature" aria-label="Featured story">
-    <a href="#story-${f.slug}" class="img ph${f.img?' ph-img':''}" style="background:${f.tone}" aria-hidden="true" tabindex="-1">${f.img ? `<img src="${esc(f.img)}" alt="" style="object-position:${esc(f.imgPos||'50% 50%')}">` : esc(f.photo)}</a>
-    <div class="txt">
-      <div class="eyebrow">${esc(catName(f.cat))} · Featured</div>
-      <h1>${esc(f.title)}</h1>
-      <p class="lede">${esc(f.dek)}</p>
-      <div class="meta">By Racquel Melissa · ${esc(f.read)}</div>
-      <a class="btn" href="#story-${f.slug}">Read the story</a>
-    </div>
+  <section class="slideshow" aria-roledescription="carousel" aria-label="Featured stories">
+    <div class="slides" id="slides">${slides.map((p, i) => `<div class="slide" role="group" aria-roledescription="slide" aria-label="${i+1} of ${slides.length}">
+      <a href="#story-${p.slug}" class="slide-img${p.img ? '' : ' ph'}" style="background:${p.tone}" tabindex="-1" aria-hidden="true">${p.img ? `<img src="${esc(p.img)}" alt="" style="object-position:${esc(p.imgPos||'50% 50%')}"${i ? ' loading="lazy"' : ''}>` : esc(p.photo)}</a>
+      <div class="slide-cap"><span class="eyebrow">${esc(catName(p.cat))}</span><h2><a href="#story-${p.slug}">${esc(p.title)}</a></h2></div>
+    </div>`).join('')}</div>
+    ${slides.length > 1 ? `<button class="slide-arrow prev" aria-label="Previous story"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="slide-arrow next" aria-label="Next story"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <div class="dots" id="dots">${slides.map((p, i) => `<button aria-label="Show story ${i+1}: ${esc(p.title)}"${i ? '' : ' aria-current="true"'}></button>`).join('')}</div>` : ''}
   </section>
   <section class="block" aria-labelledby="lh">
     <div class="sec-head"><h2 id="lh">The Latest</h2></div>
@@ -722,6 +771,7 @@ function renderHome(){
   ${verdictsBlock()}
   ${podcastBlock()}
   ${newsBlock()}`;
+  initSlideshow();
 }
 const postTime = p => { const t = Date.parse(p.date); return isNaN(t) ? null : t; };
 function newestFirst(list){
